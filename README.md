@@ -21,7 +21,7 @@ Check if elements are in viewport.
 
 #### `isElementVisible`
 
-Type: `String`
+Type: `String`  
 Returns: `Boolean`
 
 Returns if element is partially visible in viewport or not.
@@ -38,7 +38,7 @@ $('.block').KistInView('isElementVisible', { threshold: 300 });
 
 #### `isElementFullyVisible`
 
-Type: `String`
+Type: `String`  
 Returns: `Boolean`
 
 Same as `isElementVisible`, but it’s true only if element is fully visible in
@@ -46,7 +46,7 @@ viewport. Does not receive threshold parameter.
 
 #### `getVisibleElements`
 
-Type: `String`
+Type: `String`  
 Returns: `Array`
 
 Returns list of elements partially visible inside viewport
@@ -54,7 +54,7 @@ Returns list of elements partially visible inside viewport
 
 #### `getFullyVisibleElements`
 
-Type: `String`
+Type: `String`  
 Returns: `Array`
 
 Same as `getVisibleElements`, but returns list of elements fully visible inside viewport
@@ -71,7 +71,7 @@ used by every instance of plugin.
 
 #### `$.KistInView.options.threshold`
 
-Type: `Number`
+Type: `Number`  
 Default value: `0`
 
 Default threshold value.
