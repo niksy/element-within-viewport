@@ -1,4 +1,4 @@
-/* kist-inview 0.0.0 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
+/* kist-inview 0.1.0 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
 ;(function ( $, window, document, undefined ) {
 
 	var o                    = {};

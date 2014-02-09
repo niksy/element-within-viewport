@@ -1,6 +1,6 @@
 {
   "name": "kist-dochopper",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "homepage": "https://github.com/niksy/kist-inview",
   "description": "Check if elements are in viewport.",
   "main": "dist/kist-inview.min.js",
