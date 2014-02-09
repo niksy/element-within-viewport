@@ -1,0 +1,14 @@
+{
+	"camelcase": true,
+	"eqeqeq": false,
+	"immed": true,
+	"latedef": true,
+	"newcap": true,
+	"nonew": true,
+	"quotmark": "single",
+	"strict": false,
+	"trailing": true,
+	"maxparams": 3,
+	"sub": true,
+	"smarttabs": true
+}
