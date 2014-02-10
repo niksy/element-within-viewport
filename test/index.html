@@ -32,21 +32,21 @@
 
 				console.clear(  );
 				console.log( $('.block').KistInView('isElementVisible') );
-				console.log( $('.block').KistInView('getVisibleElements') );
-				console.log( $('.block').KistInView('isElementVisible', { threshold: 120 }) );
+				console.log( $('.block').KistInView('getVisibleElements', 300) );
+				console.log( $('.block').KistInView('isElementVisible', 300) );
 
 			});
-
-			$(window).trigger('scroll');
 
 			$(window).on('resize', function () {
 
 				console.clear(  );
 				console.log( $('.block').KistInView('isElementVisible') );
-				console.log( $('.block').KistInView('getVisibleElements') );
-				console.log( $('.block').KistInView('isElementVisible', { threshold: 120 }) );
+				console.log( $('.block').KistInView('getVisibleElements', 300) );
+				console.log( $('.block').KistInView('isElementVisible', 120) );
 
 			});
+
+			$(window).trigger('scroll');
 
 		});
 
