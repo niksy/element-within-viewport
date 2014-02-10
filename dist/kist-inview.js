@@ -1,4 +1,4 @@
-/* kist-inview 0.1.0 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
+/* kist-inview 0.2.0 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
 ;(function ( $, window, document, undefined ) {
 
 	var o                    = {};
@@ -8,23 +8,8 @@
 	var isFirstTime          = true;
 
 	var recalculateViewport = function () {
-		PluginModule.prototype.defaults.windowElTop    = PluginModule.prototype.defaults.domRefs.windowEl.scrollTop();
-		PluginModule.prototype.defaults.windowElBottom = PluginModule.prototype.defaults.windowElTop + PluginModule.prototype.defaults.domRefs.windowEl.height();
-	};
-
-	var PluginModule = function ( element ) {
-
-		this._element = element;
-
-	};
-
-	/**
-	 * Options
-	 *
-	 * @type {Object}
-	 */
-	o.options = {
-		threshold: 0
+		o.defaults.windowElTop    = o.defaults.domRefs.windowEl.scrollTop();
+		o.defaults.windowElBottom = o.defaults.windowElTop + o.defaults.domRefs.windowEl.height();
 	};
 
 	/**
@@ -33,6 +18,7 @@
 	 * @type {Object}
 	 */
 	o.defaults = {
+		threshold: 0,
 		windowElTop: 0,
 		windowElBottom: 0,
 		domRefs: {
@@ -41,112 +27,59 @@
 	};
 
 	/**
-	 * Initialize plugin
-	 *
-	 * @return {Plugin}
-	 */
-	o.init = function () {
-
-		this.getDomRefs();
-
-		return this;
-
-	};
-
-	/**
-	 * Get DOM references
-	 *
-	 * @return {Plugin}
-	 */
-	o.getDomRefs = function () {
-
-		this.domRefs         = {};
-		this.domRefs.element = $( this._element );
-
-	};
-
-	/**
 	 * Check if element is partially visible in viewport
 	 *
-	 * @param  {Element}  pElement
+	 * @param  {$DomRef}  pElement
+	 * @param  {Number}  pThreshold
 	 * @param  {Boolean}  pIsBatchOperation
-	 * @param  {Object}  pParams
 	 *
 	 * @return {Boolean}
 	 */
-	o.isElementVisible = function ( pElement, pIsBatchOperation, pParams ) {
+	o.isElementVisible = function ( pElement, pThreshold, pIsBatchOperation ) {
 
-		var el       = $( pElement ).eq(0);
-		var elTop    = el.offset().top;
-		var elBottom = elTop + el.height();
-		var options;
+		var elTop    = pElement.offset().top;
+		var elBottom = elTop + pElement.height();
 
-		if ( Boolean(pIsBatchOperation) === true ) {
-			options = pParams;
+		if ( Boolean( pIsBatchOperation ) === true ) {
+			pThreshold = pThreshold;
 		} else {
 			recalculateViewport();
-			options = $.extend( {}, this.options, pParams );
+			pThreshold = pThreshold || o.defaults.threshold;
 		}
 
-		return elBottom >= this.defaults.windowElTop - options.threshold && elTop <= this.defaults.windowElBottom + options.threshold;
-
-	};
-
-	/**
-	 * Check if element is fully visible in viewport
-	 *
-	 * @param  {Element}  pElement
-	 * @param  {Boolean}  pIsBatchOperation
-	 *
-	 * @return {Boolean}
-	 */
-	o.isElementFullyVisible = function ( pElement, pIsBatchOperation ) {
-
-		var el       = $( pElement ).eq(0);
-		var elTop    = el.offset().top;
-		var elBottom = elTop + el.height();
-
-		if ( Boolean(pIsBatchOperation) === false ) {
-			recalculateViewport();
-		}
-
-		return this.defaults.windowElBottom >= elBottom && this.defaults.windowElTop <= elTop;
+		return elBottom >= o.defaults.windowElTop - pThreshold && elTop <= o.defaults.windowElBottom + pThreshold;
 
 	};
 
 	/**
 	 * Return list of visible elements in viewport
 	 *
-	 * @param  {Elements}  pElements
-	 * @param  {Boolean}  pGetFullyVisible
+	 * @param  {$DomRef}  pElements
+	 * @param  {Number}  pThreshold
 	 *
-	 * @return {Array}
+	 * @return {Object}
 	 */
-	o.getElements = function ( pElements, pGetFullyVisible, pParams ) {
+	o.getVisibleElements = function ( pElements, pThreshold ) {
 
 		var instance;
-		var options;
 
 		recalculateViewport();
-		options = $.extend( {}, this.options, pParams );
+		pThreshold = pThreshold || o.defaults.threshold;
 
-		return $( pElements ).filter(function (index, element) {
+		return pElements.filter(function (index, element) {
 
 			instance = $.data(element, pluginName);
 
-			return instance[ ( Boolean( pGetFullyVisible ) === true ? 'isElementFullyVisible' : 'isElementVisible' ) ].call( instance, element, true, options );
+			return o.isElementVisible( instance, pThreshold, true );
 
 		});
 
 	};
 
-	$.extend( PluginModule.prototype, o );
-
 	$[ pluginName ]                     = {};
-	$[ pluginName ].options             = PluginModule.prototype.options;
 	$[ pluginName ].recalculateViewport = recalculateViewport;
 
-	$.fn[ pluginName ] = function ( method, options ) {
+	$.fn[ pluginName ] = function ( pMethod, pThreshold ) {
 
 		if ( isFirstTime === true ) {
 			recalculateViewport();
@@ -155,19 +88,15 @@
 
 		this.each(function () {
 			if ( !$.data( this, pluginName ) ) {
-				$.data( this, pluginName, new PluginModule( this ).init() );
+				$.data( this, pluginName, $(this) );
 			}
 		});
 
-		switch ( method ) {
+		switch ( pMethod ) {
 			case 'isElementVisible':
-				return $.data( this[0], pluginName )[ method ].call( $.data( this[0], pluginName ), this[0], null, options );
-			case 'isElementFullyVisible':
-				return $.data( this[0], pluginName )[ method ].call( $.data( this[0], pluginName ), this[0], null );
+				return o[ pMethod ]( $.data( this[0], pluginName ), pThreshold, null );
 			case 'getVisibleElements':
-				return PluginModule.prototype.getElements.call( PluginModule.prototype, this, null, options );
-			case 'getFullyVisibleElements':
-				return PluginModule.prototype.getElements.call( PluginModule.prototype, this, true );
+				return o[ pMethod ]( this, pThreshold );
 			default:
 				throw new Error( pluginName + ': Method is either undefined or doesn’t exist.' );
 		}
