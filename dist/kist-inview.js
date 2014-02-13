@@ -1,4 +1,4 @@
-/* kist-inview 0.2.0 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
+/* kist-inview 0.3.0 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
 ;(function ( $, window, document, undefined ) {
 
 	var o                    = {};
@@ -31,21 +31,13 @@
 	 *
 	 * @param  {$DomRef}  pElement
 	 * @param  {Number}  pThreshold
-	 * @param  {Boolean}  pIsBatchOperation
 	 *
 	 * @return {Boolean}
 	 */
-	o.isElementVisible = function ( pElement, pThreshold, pIsBatchOperation ) {
+	o.isInView = function ( pElement, pThreshold ) {
 
 		var elTop    = pElement.offset().top;
 		var elBottom = elTop + pElement.height();
-
-		if ( Boolean( pIsBatchOperation ) === true ) {
-			pThreshold = pThreshold;
-		} else {
-			recalculateViewport();
-			pThreshold = pThreshold || o.defaults.threshold;
-		}
 
 		return elBottom >= o.defaults.windowElTop - pThreshold && elTop <= o.defaults.windowElBottom + pThreshold;
 
@@ -59,7 +51,7 @@
 	 *
 	 * @return {Object}
 	 */
-	o.getVisibleElements = function ( pElements, pThreshold ) {
+	o.getElementsInView = function ( pElements, pThreshold ) {
 
 		var instance;
 
@@ -70,7 +62,7 @@
 
 			instance = $.data(element, pluginName);
 
-			return o.isElementVisible( instance, pThreshold, true );
+			return o.isInView( instance, pThreshold );
 
 		});
 
@@ -93,10 +85,10 @@
 		});
 
 		switch ( pMethod ) {
-			case 'isElementVisible':
-				return o[ pMethod ]( $.data( this[0], pluginName ), pThreshold, null );
-			case 'getVisibleElements':
-				return o[ pMethod ]( this, pThreshold );
+			case 'isInView':
+				return Boolean( o[ 'getElementsInView' ]( this, pThreshold ).length );
+			case 'getElementsInView':
+				return o[ 'getElementsInView' ]( this, pThreshold );
 			default:
 				throw new Error( pluginName + ': Method is either undefined or doesn’t exist.' );
 		}
