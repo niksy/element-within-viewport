@@ -31,18 +31,18 @@
 			$(window).on('scroll', function () {
 
 				console.clear(  );
-				console.log( $('.block').KistInView('isElementVisible') );
-				console.log( $('.block').KistInView('getVisibleElements', 300) );
-				console.log( $('.block').KistInView('isElementVisible', 300) );
+				console.log( $('.block').KistInView('isInView') );
+				console.log( $('.block').KistInView('getElementsInView', 300) );
+				console.log( $('.block').eq(0).KistInView('isInView', 100) );
 
 			});
 
 			$(window).on('resize', function () {
 
 				console.clear(  );
-				console.log( $('.block').KistInView('isElementVisible') );
-				console.log( $('.block').KistInView('getVisibleElements', 300) );
-				console.log( $('.block').KistInView('isElementVisible', 120) );
+				console.log( $('.block').KistInView('isInView') );
+				console.log( $('.block').KistInView('getElementsInView', 300) );
+				console.log( $('.block').eq(0).KistInView('isInView', 100) );
 
 			});
 

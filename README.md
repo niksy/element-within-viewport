@@ -14,18 +14,19 @@ Check if elements are in viewport.
 2. Initialize plugin.
 
     ```javascript
-    $('.block').KistInView('isElementVisible');
+    $('.block').KistInView('isInView');
     ```
 
 ## Options
 
-#### `isElementVisible`
+#### `isInView`
 
 Type: `String`  
 Returns: `Boolean`
 
-Returns if element is visible inside viewport or not.  
-If you pass collection of more than one element, first element will be selected.
+Returns if elements are visible inside viewport or not.  
+It checks on whole collection of elements. To filter only one element, you can
+use standard jQuery filtering methods like `filter()`, `eq()` and similar.
 
 You can pass threshold to have plugin check earlier for element presence
 (useful for lazy loading of media content).
@@ -35,16 +36,16 @@ You can pass threshold to have plugin check earlier for element presence
 This will check for element presence 300px in upwards and downards direction.
 
 ```javascript
-$('.block').KistInView('isElementVisible', 300);
+$('.block').KistInView('isInView', 300);
 ```
 
-#### `getVisibleElements`
+#### `getElementsInView`
 
 Type: `String`  
 Returns: `Array`
 
 Returns list of elements visible inside viewport
-(relies on `isElementVisible` method).
+(relies on `isInView` method).
 
 ##### Example
 
@@ -52,7 +53,7 @@ Returns list of elements visible inside viewport and 300px in upwards
 and downards direction.
 
 ```javascript
-$('.block').KistInView('getVisibleElements', 300);
+$('.block').KistInView('getElementsInView', 300);
 ```
 
 ## Global options
