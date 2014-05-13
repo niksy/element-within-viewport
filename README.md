@@ -1,66 +1,40 @@
-# Kist InView
+# kist-inview
 
-Check if elements are in viewport.
+Check presence of elements inside viewport.
+
+## Installation
+
+```sh
+bower install niksy/kist-inview
+```
 
 ## Usage
 
-1. Include jQuery and plugin.  
+```js
+$('div').inView('state', 200);
+```
 
-    ```html
-    <script src="jquery.min.js"></script>
-    <script src="dist/kist-inview.min.js">
-    ```
+## API
 
-2. Initialize plugin.
+### `el.inView([threshold])`
 
-    ```javascript
-    $('.block').KistInView('isInView');
-    ```
+Returns elements visible inside viewport or not.
+It checks on whole collection of elements. To filter only one element, you can use standard jQuery filtering methods like `filter()` and `eq()`.
 
-## Options
-
-#### `isInView`
-
-Type: `String`  
-Returns: `Boolean`
-
-Returns if elements are visible inside viewport or not.  
-It checks on whole collection of elements. To filter only one element, you can
-use standard jQuery filtering methods like `filter()`, `eq()` and similar.
-
-You can pass threshold to have plugin check earlier for element presence
-(useful for lazy loading of media content).
+You can pass threshold to have plugin check earlier for element presence (useful for lazy loading of media content).
 
 ##### Example
 
-This will check for element presence 300px in upwards and downards direction.
+Returns list of elements visible inside viewport, 300px vertically from both directions.
 
-```javascript
-$('.block').KistInView('isInView', 300);
+```js
+$('div').inView(300);
 ```
 
-#### `getElementsInView`
+## Browser support
 
-Type: `String`  
-Returns: `Array`
+Tested in IE8+ and all modern browsers.
 
-Returns list of elements visible inside viewport
-(relies on `isInView` method).
+## License
 
-##### Example
-
-Returns list of elements visible inside viewport and 300px in upwards
-and downards direction.
-
-```javascript
-$('.block').KistInView('getElementsInView', 300);
-```
-
-## Global options
-
-#### `$.KistInView.recalculateViewport`
-
-Type: `Function`
-
-Recalculates viewport values (window height and vertical scroll)
-used by every instance of plugin.
+MIT © [Ivan Nikolić](http://ivannikolic.com)

@@ -1,98 +1,111 @@
 /* kist-inview 0.3.0 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
 ;(function ( $, window, document, undefined ) {
 
-	var o                    = {};
-	var pluginName           = 'KistInView';
-	var pluginDomNamespace   = 'kist-inview';
-	var pluginEventNamespace = 'kist.inview';
-	var isFirstTime          = true;
+	var pluginNamespace = 'kist';
+	var pluginName      = 'inView';
 
-	var recalculateViewport = function () {
-		o.defaults.windowElTop    = o.defaults.domRefs.windowEl.scrollTop();
-		o.defaults.windowElBottom = o.defaults.windowElTop + o.defaults.domRefs.windowEl.height();
-	};
+	var InView = function () {
 
-	/**
-	 * Defaults
-	 *
-	 * @type {Object}
-	 */
-	o.defaults = {
-		threshold: 0,
-		windowElTop: 0,
-		windowElBottom: 0,
-		domRefs: {
-			windowEl: $(window)
-		}
-	};
+		var setupDomRefs = function () {
+			this.dom        = {};
+			this.dom.window = $(window);
+		};
 
-	/**
-	 * Check if element is partially visible in viewport
-	 *
-	 * @param  {$DomRef}  pElement
-	 * @param  {Number}  pThreshold
-	 *
-	 * @return {Boolean}
-	 */
-	o.isInView = function ( pElement, pThreshold ) {
-
-		var elTop    = pElement.offset().top;
-		var elBottom = elTop + pElement.height();
-
-		return elBottom >= o.defaults.windowElTop - pThreshold && elTop <= o.defaults.windowElBottom + pThreshold;
+		setupDomRefs.call(this);
+		this.calculateViewport();
 
 	};
 
-	/**
-	 * Return list of visible elements in viewport
-	 *
-	 * @param  {$DomRef}  pElements
-	 * @param  {Number}  pThreshold
-	 *
-	 * @return {Object}
-	 */
-	o.getElementsInView = function ( pElements, pThreshold ) {
+	$.extend(InView.prototype, {
 
-		var instance;
+		/**
+		 * Default options
+		 *
+		 * @type {Object}
+		 */
+		defaults: {
+			windowTop: 0,
+			windowBottom: 0
+		},
 
-		recalculateViewport();
-		pThreshold = pThreshold || o.defaults.threshold;
+		/**
+		 * Calculate viewport
+		 *
+		 * @return {}
+		 */
+		calculateViewport: function () {
 
-		return pElements.filter(function (index, element) {
+			this.defaults.windowTop    = this.dom.window.scrollTop();
+			this.defaults.windowBottom = this.defaults.windowTop + this.dom.window.height();
 
-			instance = $.data(element, pluginName);
+		},
 
-			return o.isInView( instance, pThreshold );
+		/**
+		 * Check if element is (partially) visible in viewport
+		 *
+		 * @param  {jQuery}  el
+		 * @param  {Number}  threshold
+		 * @param  {Boolean}  viewportCalculated
+		 *
+		 * @return {Boolean}
+		 */
+		isVisible: function ( el, threshold, viewportCalculated ) {
 
-		});
+			var elTop    = el.offset().top;
+			var elBottom = elTop + el.height();
+			threshold    = threshold || 0;
 
-	};
-
-	$[ pluginName ]                     = {};
-	$[ pluginName ].recalculateViewport = recalculateViewport;
-
-	$.fn[ pluginName ] = function ( pMethod, pThreshold ) {
-
-		if ( isFirstTime === true ) {
-			recalculateViewport();
-			isFirstTime = false;
-		}
-
-		this.each(function () {
-			if ( !$.data( this, pluginName ) ) {
-				$.data( this, pluginName, $(this) );
+			if ( !viewportCalculated ) {
+				this.calculateViewport();
 			}
-		});
 
-		switch ( pMethod ) {
-			case 'isInView':
-				return Boolean( o[ 'getElementsInView' ]( this, pThreshold ).length );
-			case 'getElementsInView':
-				return o[ 'getElementsInView' ]( this, pThreshold );
-			default:
+			return elBottom >= this.defaults.windowTop - threshold && elTop <= this.defaults.windowBottom + threshold;
+
+		},
+
+		/**
+		 * Return list of elements visible in viewport
+		 *
+		 * @param  {jQuery}  el
+		 * @param  {Number}  threshold
+		 *
+		 * @return {jQuery}
+		 */
+		getElements: function ( el, threshold ) {
+
+			this.calculateViewport();
+
+			return el.filter($.proxy(function ( index, element ) {
+
+				return this.isVisible( $(element), threshold, true );
+
+			}, this));
+
+		}
+
+	});
+
+	var o = new InView();
+
+	$.fn[pluginNamespace] = $.fn[pluginNamespace] || {};
+
+	$.fn[pluginNamespace][pluginName] = function ( method, threshold ) {
+		/* jshint -W086 */
+
+		switch ( method ) {
+			case 'state': {
+				return Boolean( o.getElements( this, threshold ).length );
+			}
+			case 'elements': {
+				return o.getElements( this, threshold );
+			}
+			default: {
 				throw new Error( pluginName + ': Method is either undefined or doesn’t exist.' );
+			}
 		}
 
 	};
+
+	$.fn[pluginName] = $.fn[pluginName] || $.fn[pluginNamespace][pluginName];
 
 })( jQuery, window, document );

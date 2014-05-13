@@ -1,0 +1,71 @@
+{
+	"excludeFiles": [
+		"**/*.jshintrc",
+		"**/*.eslintrc",
+		"**/*.json",
+		"**/*.min.js",
+		"**/Core/Front/Assets/Vendor/**/*",
+		"**/application/njuskalo/Core/Front/Assets/Vendor/**/*",
+		"**/Seller/Ad/Base/Component/ImageUploader/Assets/Script/flash/**/*",
+		"**/Seller/Feature/Delivery/Provider/OverseasExpress/Controller/Assets/Script/overseas_express_cities.js",
+		"**/Seller/Ad/Boost/Controller/Boost/Assets/Script/jquery.numeric.js",
+		"**/Seller/Feature/Controller/Assets/Script/buyFeature.js",
+		"**/Seller/Ad/Boost/Controller/Boost/Assets/Script/ctl_boost_module.js",
+		"**/Seller/Ad/Boost/Controller/Boost/Assets/Script/ctl_boost_module-default.js",
+		"**/Seller/Ad/Boost/Controller/Boost/Assets/Script/ctl_boost_module-confirm_boost.js",
+		"**/Seller/Ad/Boost/Controller/Boost/Assets/Script/ctl_boost_ad-default.js",
+		"**/Seller/Ad/Boost/Component/OfferProduct/Assets/Script/cmp_offer_product.js",
+		"**/Seller/Ad/Boost/Controller/Boost/Assets/Script/ctl_boost_ad-finish_boost.js",
+		"**/Core/Front/Assets/Script/legacy.js"
+	],
+	"requireCurlyBraces": ["if", "else", "for", "while", "do", "try", "catch", "case", "default"],
+	"requireSpaceAfterKeywords": ["if", "else", "for", "while", "do", "switch", "return", "try", "catch"],
+	"requireParenthesesAroundIIFE": true,
+	"requireSpacesInFunctionExpression": {
+		"beforeOpeningRoundBrace": true,
+		"beforeOpeningCurlyBrace": true
+	},
+	"requireSpacesInAnonymousFunctionExpression": {
+		"beforeOpeningRoundBrace": true,
+		"beforeOpeningCurlyBrace": true
+	},
+	"requireSpacesInNamedFunctionExpression": {
+		"beforeOpeningRoundBrace": true,
+		"beforeOpeningCurlyBrace": true
+	},
+	"requireSpacesInFunctionDeclaration": {
+		"beforeOpeningRoundBrace": true,
+		"beforeOpeningCurlyBrace": true
+	},
+	"disallowMultipleVarDecl": true,
+	"requireBlocksOnNewline": true,
+	"disallowEmptyBlocks": true,
+	"disallowDanglingUnderscores": true,
+	"disallowSpaceAfterObjectKeys": true,
+	"requireCommaBeforeLineBreak": true,
+	"requireOperatorBeforeLineBreak": ["?", "+", "-", "/", "*", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<="],
+	"disallowLeftStickedOperators": ["?", "+", "-", "/", "*", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<="],
+	"requireRightStickedOperators": ["!"],
+	"disallowRightStickedOperators": ["?", "+", "/", "*", ":", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<="],
+	"requireLeftStickedOperators": [","],
+	"disallowSpaceAfterPrefixUnaryOperators": ["++", "--", "+", "-", "~", "!"],
+	"disallowSpaceBeforePostfixUnaryOperators": ["++", "--"],
+	"requireSpaceBeforeBinaryOperators": ["+", "-", "/", "*", "=", "==", "===", "!=", "!=="],
+	"requireSpaceAfterBinaryOperators": ["+", "-", "/", "*", "=", "==", "===", "!=", "!=="],
+	"disallowImplicitTypeConversion": ["numeric", "boolean", "binary", "string"],
+	"requireCamelCaseOrUpperCaseIdentifiers": true,
+	"disallowKeywords": ["with"],
+	"disallowMultipleLineStrings": true,
+	"validateLineBreaks": "LF",
+	"validateQuoteMarks": { "mark": "'", "escape": true },
+	"validateIndentation": "\t",
+	"disallowMixedSpacesAndTabs": "smart",
+	"disallowTrailingWhitespace": true,
+	"disallowKeywordsOnNewLine": ["else"],
+	"requireLineFeedAtFileEnd": true,
+	"requireCapitalizedConstructors": true,
+	"safeContextKeyword": [ "self" ],
+	"disallowYodaConditions": true
+	// "requireSpaceBeforeBlockStatements": true,
+	// "disallowTrailingComma": true,
+}

@@ -49,7 +49,7 @@ module.exports = function (grunt) {
 		jscs: {
 			main: {
 				options: {
-					config: '.jscs'
+					config: '.jscsrc'
 				},
 				files: {
 					src: [
@@ -83,6 +83,5 @@ module.exports = function (grunt) {
 	grunt.registerTask( 'releasePatch', ['bump-only:patch', 'default', 'bump-commit'] );
 	grunt.registerTask( 'releaseMinor', ['bump-only:minor', 'default', 'bump-commit'] );
 	grunt.registerTask( 'releaseMajor', ['bump-only:major', 'default', 'bump-commit'] );
-
 
 };
