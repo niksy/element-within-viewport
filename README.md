@@ -11,7 +11,7 @@ bower install niksy/kist-inview
 ## Usage
 
 ```js
-$('div').inView('state', 200);
+$('div').inView(200);
 ```
 
 ## API
