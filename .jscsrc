@@ -1,23 +1,4 @@
 {
-	"excludeFiles": [
-		"**/*.jshintrc",
-		"**/*.eslintrc",
-		"**/*.json",
-		"**/*.min.js",
-		"**/Core/Front/Assets/Vendor/**/*",
-		"**/application/njuskalo/Core/Front/Assets/Vendor/**/*",
-		"**/Seller/Ad/Base/Component/ImageUploader/Assets/Script/flash/**/*",
-		"**/Seller/Feature/Delivery/Provider/OverseasExpress/Controller/Assets/Script/overseas_express_cities.js",
-		"**/Seller/Ad/Boost/Controller/Boost/Assets/Script/jquery.numeric.js",
-		"**/Seller/Feature/Controller/Assets/Script/buyFeature.js",
-		"**/Seller/Ad/Boost/Controller/Boost/Assets/Script/ctl_boost_module.js",
-		"**/Seller/Ad/Boost/Controller/Boost/Assets/Script/ctl_boost_module-default.js",
-		"**/Seller/Ad/Boost/Controller/Boost/Assets/Script/ctl_boost_module-confirm_boost.js",
-		"**/Seller/Ad/Boost/Controller/Boost/Assets/Script/ctl_boost_ad-default.js",
-		"**/Seller/Ad/Boost/Component/OfferProduct/Assets/Script/cmp_offer_product.js",
-		"**/Seller/Ad/Boost/Controller/Boost/Assets/Script/ctl_boost_ad-finish_boost.js",
-		"**/Core/Front/Assets/Script/legacy.js"
-	],
 	"requireCurlyBraces": ["if", "else", "for", "while", "do", "try", "catch", "case", "default"],
 	"requireSpaceAfterKeywords": ["if", "else", "for", "while", "do", "switch", "return", "try", "catch"],
 	"requireParenthesesAroundIIFE": true,
