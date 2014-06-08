@@ -1,0 +1,14 @@
+body {
+	padding-bottom:1200px;
+}
+.block {
+	width:300px; height:300px;
+	margin:10px;
+	background-color:lightblue;
+}
+.block1 {
+	background-color:red;
+}
+.destroy {
+	position:fixed; right:10px; top:10px;
+}

@@ -1,10 +1,10 @@
 {
-  "name": "kist-inview",
+  "name": "kist-inView",
   "version": "0.4.2",
   "description": "Check if elements are in viewport.",
   "author": "Ivan Nikolić",
   "license": "MIT",
-  "main": "src/kist-inview.js",
+  "main": "src/kist-inView.js",
   "directories": {
     "test": "test"
   },
@@ -12,12 +12,12 @@
     "viewport"
   ],
   "bugs": {
-    "url": "https://github.com/niksy/kist-inview/issues"
+    "url": "https://github.com/niksy/kist-inView/issues"
   },
-  "homepage": "https://github.com/niksy/kist-inview",
+  "homepage": "https://github.com/niksy/kist-inView",
   "repository": {
     "type": "git",
-    "url": "git@github.com:niksy/kist-inview.git"
+    "url": "git@github.com:niksy/kist-inView.git"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

@@ -1,16 +1,16 @@
 {
-  "name": "kist-inview",
+  "name": "kist-inView",
   "version": "0.4.2",
   "description": "Check if elements are in viewport.",
   "authors": [
     "Ivan Nikolić"
   ],
   "license": "MIT",
-  "main": "dist/kist-inview.min.js",
+  "main": "dist/kist-inView.min.js",
   "keywords": [
     "viewport"
   ],
-  "homepage": "https://github.com/niksy/kist-inview",
+  "homepage": "https://github.com/niksy/kist-inView",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -22,6 +22,7 @@
     "package.json"
   ],
   "dependencies": {
-    "jquery": ">=1"
+    "jquery": ">=1",
+    "jquery-throttle-debounce": "niksy/jquery-throttle-debounce"
   }
 }

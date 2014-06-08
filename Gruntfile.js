@@ -15,7 +15,7 @@ module.exports = function ( grunt ) {
 					banner: '<%= meta.banner %>'
 				},
 				files: {
-					'dist/kist-inview.js': ['src/kist-inview.js']
+					'dist/kist-inView.js': ['src/kist-inView.js']
 				}
 			}
 		},
@@ -26,7 +26,7 @@ module.exports = function ( grunt ) {
 					banner: '<%= meta.banner %>'
 				},
 				files: {
-					'dist/kist-inview.min.js': ['src/kist-inview.js']
+					'dist/kist-inView.min.js': ['src/kist-inView.js']
 				}
 			}
 		},

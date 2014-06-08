@@ -1,3 +1,4 @@
+/*! kist-inView 0.4.2 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
 ;(function ( $, window, document, undefined ) {
 
 	var plugin = {

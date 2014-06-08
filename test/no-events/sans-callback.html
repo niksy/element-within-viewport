@@ -2,18 +2,9 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-	<title>In view</title>
+	<title>Sans callback</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1.0" />
-	<style>
-		body {
-			padding-bottom:900px;
-		}
-		.block {
-			width:300px; height:300px;
-			margin:10px;
-			background-color:lightblue;
-		}
-	</style>
+	<link rel="stylesheet" href="../assets/style/style.css" />
 </head>
 <body>
 
@@ -25,8 +16,8 @@
 	<div class="block"></div>
 	<div class="block"></div>
 
-	<script src="../bower_components/jquery/dist/jquery.min.js"></script>
-	<script src="../src/kist-inview.js"></script>
+	<script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="../../src/kist-inView.js"></script>
 	<script>
 
 		$(window)
@@ -35,7 +26,7 @@
 				console.clear(  );
 				console.log( Boolean($('.block').inView().length) );
 				console.log( $('.block').inView(300) );
-				console.log( Boolean($('.block').eq(0).inView(100).length) );
+				console.log( Boolean($('.block').eq(0).inView({ threshold: 100 }).length) );
 
 			})
 			.on('resize', function () {
@@ -43,7 +34,7 @@
 				console.clear(  );
 				console.log( Boolean($('.block').inView().length) );
 				console.log( $('.block').inView(300) );
-				console.log( Boolean($('.block').eq(0).inView(100).length) );
+				console.log( Boolean($('.block').eq(0).inView({ threshold: 100 }).length) );
 
 			})
 			.trigger('scroll');

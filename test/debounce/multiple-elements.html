@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Debounce, multiple elements</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+	<link rel="stylesheet" href="../assets/style/style.css" />
+</head>
+<body>
+
+	<button type="button" class="destroy">Destroy instance</button>
+
+	<div class="block"></div>
+	<div class="block"></div>
+	<div class="block"></div>
+	<div class="block"></div>
+	<div class="block"></div>
+	<div class="block"></div>
+	<div class="block"></div>
+
+	<script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="../../bower_components/jquery-throttle-debounce/jquery.ba-throttle-debounce.min.js"></script>
+	<script src="../../src/kist-inView.js"></script>
+	<script>
+
+		$('.block').inView(300, function ( el ) {
+			if ( !+'\v1' ) {
+				alert(JSON.stringify(el, null, '\t'));
+			} else {
+				console.log( el );
+			}
+		}).html('Plugin initialized');
+
+		$('.destroy').on('click', function () {
+			$('.block').inView('destroy').html('Instance destroyed');
+		});
+
+	</script>
+
+</body>
+</html>
