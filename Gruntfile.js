@@ -1,31 +1,30 @@
-module.exports = function (grunt) {
+module.exports = function ( grunt ) {
 
 	grunt.initConfig({
 
 		pkg: grunt.file.readJSON('package.json'),
 
 		meta: {
-			banner: '<%= pkg.name %> <%= pkg.version %> - <%= pkg.description %> | Author: <%= pkg.author %>, <%= grunt.template.today("yyyy") %> | License: <%= pkg.license %>',
-			defaultBanner: '/* <%= meta.banner %> */\n',
-			unstrippedBanner: '/*! <%= meta.banner %> */\n'
+			banner: '/*! <%= pkg.name %> <%= pkg.version %> - <%= pkg.description %> | Author: <%= pkg.author %>, <%= grunt.template.today("yyyy") %> | License: <%= pkg.license %> */\n'
 		},
 
 		concat: {
-			options: {
-				stripBanners: true,
-				banner: '<%= meta.defaultBanner %>'
-			},
 			dist: {
-				src: ['src/kist-inview.js'],
-				dest: 'dist/kist-inview.js'
+				options: {
+					stripBanners: true,
+					banner: '<%= meta.banner %>'
+				},
+				files: {
+					'dist/kist-inview.js': ['src/kist-inview.js']
+				}
 			}
 		},
 
 		uglify: {
-			options: {
-			banner: '<%= meta.unstrippedBanner %>'
-			},
 			dist: {
+				options: {
+					banner: '<%= meta.banner %>'
+				},
 				files: {
 					'dist/kist-inview.min.js': ['src/kist-inview.js']
 				}
@@ -41,7 +40,7 @@ module.exports = function (grunt) {
 				commitFiles: ['-a'],
 				createTag: true,
 				tagName: '%VERSION%',
-				tagMessage: 'Version %VERSION%',
+				tagMessage: '',
 				push: false
 			}
 		},
@@ -53,7 +52,7 @@ module.exports = function (grunt) {
 				},
 				files: {
 					src: [
-						'src/kist-inview.js'
+						'src/**/*.js'
 					]
 				}
 			}
@@ -65,7 +64,7 @@ module.exports = function (grunt) {
 					jshintrc: '.jshintrc'
 				},
 				src: [
-					'src/kist-inview.js'
+					'src/**/*.js'
 				]
 			}
 		}
@@ -79,7 +78,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks( 'grunt-bump' );
 
 	grunt.registerTask( 'stylecheck', ['jshint:main', 'jscs:main'] );
-	grunt.registerTask( 'default', ['concat:dist', 'uglify:dist'] );
+	grunt.registerTask( 'default', ['concat', 'uglify'] );
 	grunt.registerTask( 'releasePatch', ['bump-only:patch', 'default', 'bump-commit'] );
 	grunt.registerTask( 'releaseMinor', ['bump-only:minor', 'default', 'bump-commit'] );
 	grunt.registerTask( 'releaseMajor', ['bump-only:major', 'default', 'bump-commit'] );
