@@ -9,6 +9,10 @@ body {
 .block1 {
 	background-color:red;
 }
-.destroy {
+.destroy,
+.destroy1 {
 	position:fixed; right:10px; top:10px;
+}
+.destroy1 {
+	top:40px;
 }

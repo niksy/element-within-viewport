@@ -36,7 +36,8 @@
 
 			domRef.common.window
 				.on(
-					'scroll' + this.instance.ens + ' resize' + this.instance.ens,
+					'scroll' + this.instance.ens + ' ' +
+					'resize' + this.instance.ens,
 					bounce.call(this, this.options.debounce, windowChange, cb)
 				);
 
