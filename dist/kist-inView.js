@@ -1,10 +1,10 @@
-/*! kist-inView 0.5.1 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
+/*! kist-inView 0.5.2 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
 ;(function ( $, window, document, undefined ) {
 
 	var plugin = {
 		name: 'inView',
 		ns: {
-			css: 'KistInView',
+			css: 'kist-InView',
 			event: '.kist.inView'
 		},
 		instance: {
@@ -82,7 +82,7 @@
 	/**
 	 * Bouncing mechanism
 	 *
-	 * @param  {Number}   timeout
+	 * @param  {Integer}   timeout
 	 * @param  {Function} fn
 	 * @param  {Function} cb
 	 *
@@ -104,6 +104,8 @@
 		domRef.setup.call(this);
 		events.setup.call(this, cb);
 
+		windowChange.call(this, cb);
+
 	}
 
 	$.extend(InView.prototype, {
@@ -112,7 +114,7 @@
 		 * Check if element is (partially) visible in viewport
 		 *
 		 * @param  {jQuery}  el
-		 * @param  {Number}  threshold
+		 * @param  {Integer}  threshold
 		 *
 		 * @return {Boolean}
 		 */
@@ -130,7 +132,7 @@
 		 * Return list of elements visible in viewport
 		 *
 		 * @param  {jQuery}  el
-		 * @param  {Number}  threshold
+		 * @param  {Integer}  threshold
 		 *
 		 * @return {jQuery}
 		 */
