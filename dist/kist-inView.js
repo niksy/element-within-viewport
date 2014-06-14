@@ -1,4 +1,4 @@
-/*! kist-inView 0.5.2 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
+/*! kist-inView 0.5.3 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
 ;(function ( $, window, document, undefined ) {
 
 	var plugin = {
@@ -6,23 +6,10 @@
 		ns: {
 			css: 'kist-InView',
 			event: '.kist.inView'
-		},
-		instance: {
-			id: 0,
-			setup: function () {
-				this.instance     = this.instance || {};
-				this.instance.id  = plugin.instance.id++;
-				this.instance.ens = plugin.ns.event + '.' + this.instance.id;
-			},
-			destroy: function () {
-				this.dom.el.each(function ( index, element ) {
-					delete $.data(element)[plugin.name];
-				});
-			}
 		}
 	};
 
-	var domRef = {
+	var dom = {
 		common: {
 			window: $(window)
 		},
@@ -34,17 +21,29 @@
 
 	var events = {
 		setup: function ( cb ) {
-
-			domRef.common.window
+			dom.common.window
 				.on(
 					'scroll' + this.instance.ens + ' ' +
 					'resize' + this.instance.ens,
 					bounce.call(this, this.options.debounce, windowChange, cb)
 				);
-
 		},
 		destroy: function () {
-			domRef.common.window.off(this.instance.ens);
+			dom.common.window.off(this.instance.ens);
+		}
+	};
+
+	var instance = {
+		id: 0,
+		setup: function () {
+			this.instance     = this.instance || {};
+			this.instance.id  = instance.id++;
+			this.instance.ens = plugin.ns.event + '.' + this.instance.id;
+		},
+		destroy: function () {
+			this.dom.el.each(function ( index, element ) {
+				delete $.data(element)[plugin.name];
+			});
 		}
 	};
 
@@ -59,8 +58,8 @@
 	 * @return {Object}
 	 */
 	function calculateViewport () {
-		windowCoords.top    = domRef.common.window.scrollTop();
-		windowCoords.bottom = windowCoords.top + domRef.common.window.height();
+		windowCoords.top    = dom.common.window.scrollTop();
+		windowCoords.bottom = windowCoords.top + dom.common.window.height();
 
 		return windowCoords;
 	}
@@ -100,8 +99,8 @@
 		this.element = element;
 		this.options = $.extend({}, this.defaults, options);
 
-		plugin.instance.setup.call(this);
-		domRef.setup.call(this);
+		instance.setup.call(this);
+		dom.setup.call(this);
 		events.setup.call(this, cb);
 
 		windowChange.call(this, cb);
@@ -149,7 +148,7 @@
 		},
 
 		destroy: function () {
-			plugin.instance.destroy.call(this);
+			instance.destroy.call(this);
 			events.destroy.call(this);
 		},
 
