@@ -1,4 +1,4 @@
-/*! kist-inView 0.5.3 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
+/*! kist-inView 0.5.4 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
 ;(function ( $, window, document, undefined ) {
 
 	var plugin = {
@@ -165,11 +165,13 @@
 
 	});
 
-	$.inView = {
+	$.kist = $.kist || {};
+
+	$.kist[plugin.name] = {
 		defaults: InView.prototype.defaults
 	};
 
-	$.fn.inView = function ( options, cb ) {
+	$.fn[plugin.name] = function ( options, cb ) {
 
 		options = options || {};
 		cb = cb || options.success;
