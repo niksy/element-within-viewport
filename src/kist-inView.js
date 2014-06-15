@@ -164,11 +164,13 @@
 
 	});
 
-	$.inView = {
+	$.kist = $.kist || {};
+
+	$.kist[plugin.name] = {
 		defaults: InView.prototype.defaults
 	};
 
-	$.fn.inView = function ( options, cb ) {
+	$.fn[plugin.name] = function ( options, cb ) {
 
 		options = options || {};
 		cb = cb || options.success;

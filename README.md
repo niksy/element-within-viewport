@@ -16,7 +16,7 @@ Returns: `jQuery`
 
 #### options
 
-Type: `Integer|Object`
+Type: `Integer|Object|String`
 
 ##### Options defined as `Integer`
 
@@ -48,6 +48,14 @@ Returns: ( [Elements in viewport] )
 
 Callback to execute if there are elements inside viewport.
 
+##### Options defined as `String`
+
+Type: `String`
+
+###### destroy
+
+Destroy plugin instance.
+
 #### success
 
 Type: `Function`  
@@ -57,7 +65,7 @@ Callback to execute if there are elements inside viewport.
 
 ### Global options
 
-#### `$.inView.defaults`
+#### `$.kist.inView.defaults`
 
 Type: `Object`
 
