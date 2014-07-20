@@ -1,4 +1,4 @@
-/*! kist-inView 0.5.4 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
+/*! kist-inView 0.6.0 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
 ;(function ( $, window, document, undefined ) {
 
 	var plugin = {
@@ -6,8 +6,12 @@
 		ns: {
 			css: 'kist-InView',
 			event: '.kist.inView'
+		},
+		error: function ( message ) {
+			throw new Error(plugin.name + ': ' + message);
 		}
 	};
+	plugin.publicMethods = ['destroy'];
 
 	var dom = {
 		common: {
@@ -47,10 +51,29 @@
 		}
 	};
 
+	var FIRST_CALL_TIMEOUT = (document.all && !document.addEventListener) ? 250 : 0;
 	var windowCoords = {
 		top: 0,
 		bottom: 0
 	};
+
+	function setOptions ( options, cb ) {
+		var temp = {};
+		if ( typeof(options) === 'number' ) {
+			$.extend(temp, {
+				threshold: options
+			});
+		}
+		if ( typeof(cb) === 'function' ) {
+			$.extend(temp, {
+				success: cb
+			});
+		}
+		if ( typeof(options) === 'object' ) {
+			$.extend(temp, options);
+		}
+		return temp;
+	}
 
 	/**
 	 * Calculate viewport
@@ -65,16 +88,14 @@
 	}
 
 	/**
-	 * When window is scrolled or resized
+	 * Action when window is scrolled or resized
 	 *
 	 * @param  {Function} cb
-	 *
-	 * @return {Function}
 	 */
 	function windowChange ( cb ) {
 		var result = this.getElements(this.dom.el, this.options.threshold);
 		if ( result.length ) {
-			return cb.call(null, result);
+			cb(result);
 		}
 	}
 
@@ -94,16 +115,32 @@
 		return $.proxy(fn, this, cb);
 	}
 
-	function InView ( element, options, cb ) {
+	/**
+	 * Combined once and success callbacks
+	 *
+	 * @param  {jQuery} result
+	 *
+	 * @return {}
+	 */
+	function cbAll ( result ) {
+		if ( !this._once ) {
+			this.options.once.call(this.dom.el, result);
+			this._once = true;
+		}
+		this.options.success.call(this.dom.el, result);
+	}
+
+	function InView ( element, options ) {
 
 		this.element = element;
 		this.options = $.extend({}, this.defaults, options);
 
 		instance.setup.call(this);
 		dom.setup.call(this);
-		events.setup.call(this, cb);
+		events.setup.call(this, $.proxy(cbAll, this));
 
-		windowChange.call(this, cb);
+		// Call window change method on the next event loop
+		setTimeout($.proxy(windowChange, this, $.proxy(cbAll, this)), FIRST_CALL_TIMEOUT);
 
 	}
 
@@ -121,7 +158,6 @@
 
 			var elTop    = el.offset().top;
 			var elBottom = elTop + el.height();
-			threshold    = threshold || this.defaults.threshold;
 
 			return elBottom >= windowCoords.top - threshold && elTop <= windowCoords.bottom + threshold;
 
@@ -160,7 +196,8 @@
 		defaults: {
 			threshold: 0,
 			debounce: 300,
-			success: null
+			success: function () {},
+			once: function () {}
 		}
 
 	});
@@ -173,25 +210,18 @@
 
 	$.fn[plugin.name] = function ( options, cb ) {
 
-		options = options || {};
-		cb = cb || options.success;
-
-		if ( typeof(options) === 'number' ) {
-			options = {
-				threshold: options
-			};
-		}
-
-		if ( typeof(options) === 'string' ) {
+		if ( typeof(options) === 'string' && $.inArray(options, plugin.publicMethods) !== -1 ) {
 			return this.each(function () {
-				if ($.data(this, plugin.name)) {
-					$.data(this, plugin.name)[options]();
+				var pluginInstance = $.data(this, plugin.name);
+				if ( pluginInstance ) {
+					pluginInstance[options]();
 				}
 			});
 		}
+		options = setOptions.apply(null, arguments);
 
-		if ( !cb ) {
-			return InView.prototype.getElements( this, options.threshold );
+		if ( !options.success && !options.once ) {
+			return InView.prototype.getElements(this, options.threshold || InView.prototype.defaults.threshold);
 		} else {
 
 			/**
@@ -204,7 +234,7 @@
 				.filter(function ( index, element ) {
 					return !$.data(element, plugin.name);
 				})
-				.data(plugin.name, new InView( this, options, cb ));
+				.data(plugin.name, new InView(this, options));
 		}
 
 	};
