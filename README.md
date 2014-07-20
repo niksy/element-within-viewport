@@ -44,9 +44,16 @@ If [debounce plugin](https://github.com/niksy/jquery-throttle-debounce) is avail
 ###### success
 
 Type: `Function`  
-Returns: ( [Elements in viewport] )
+Arguments: [Elements in viewport]
 
 Callback to execute if there are elements inside viewport.
+
+###### once
+
+Type: `Function`  
+Arguments: ( [Elements in viewport]
+
+Callback to execute first time when there are elements inside viewport.
 
 ##### Options defined as `String`
 
@@ -55,13 +62,6 @@ Type: `String`
 ###### destroy
 
 Destroy plugin instance.
-
-#### success
-
-Type: `Function`  
-Returns: ( [Elements in viewport] )
-
-Callback to execute if there are elements inside viewport.
 
 ### Global options
 
@@ -101,6 +101,9 @@ $('.block').inView({
 	debounce: 100,
 	success: function ( el ) {
 		console.log( 'We’re in viewport!' );
+	},
+	once: function ( el ) {
+		console.log( 'We’re in viewport and this is called only once!' );
 	}
 });
 ```
@@ -121,6 +124,9 @@ $('.block').eq(0).inView({
 	debounce: 100,
 	success: function ( el ) {
 		console.log( 'I’m in viewport!' );
+	},
+	once: function ( el ) {
+		console.log( 'I’m in viewport and this is called only once!' );
 	}
 });
 ```

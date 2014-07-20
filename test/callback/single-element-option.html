@@ -26,6 +26,9 @@
 			threshold: 300,
 			success: function ( el ) {
 				console.log( el.index() );
+			},
+			once: function ( el ) {
+				console.log('Once called!');
 			}
 		}).html('Plugin initialized');
 

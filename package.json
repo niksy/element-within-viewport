@@ -4,7 +4,7 @@
   "description": "Check if elements are in viewport.",
   "author": "Ivan Nikolić",
   "license": "MIT",
-  "main": "src/kist-inView.js",
+  "main": "Gruntfile.js",
   "directories": {
     "test": "test"
   },
@@ -25,6 +25,6 @@
     "grunt-contrib-concat": "^0.4.0",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-uglify": "^0.4.0",
-    "grunt-jscs-checker": "^0.4.4"
+    "grunt-jscs": "^0.6.1"
   }
 }
