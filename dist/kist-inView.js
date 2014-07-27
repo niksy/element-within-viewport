@@ -1,4 +1,4 @@
-/*! kist-inView 0.6.0 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
+/*! kist-inView 0.6.1 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
 ;(function ( $, window, document, undefined ) {
 
 	var plugin = {
@@ -56,9 +56,21 @@
 		top: 0,
 		bottom: 0
 	};
+	var privates = {
+		onceCalled: false,
+		hasOnlyOnce: false
+	};
 
-	function setOptions ( options, cb ) {
+	/**
+	 * @param  {Integer|Object}   options
+	 * @param  {Function} cb
+	 *
+	 * @return {Object}
+	 */
+	function constructOptions ( options, cb ) {
+
 		var temp = {};
+
 		if ( typeof(options) === 'number' ) {
 			$.extend(temp, {
 				threshold: options
@@ -72,7 +84,25 @@
 		if ( typeof(options) === 'object' ) {
 			$.extend(temp, options);
 		}
+
 		return temp;
+	}
+
+	/**
+	 * @param  {Object} options
+	 *
+	 * @return {Object}
+	 */
+	function constructPrivates ( options ) {
+
+		var temp = $.extend({}, privates);
+
+		if ( !options.success && options.once ) {
+			temp.hasOnlyOnce = true;
+		}
+
+		return temp;
+
 	}
 
 	/**
@@ -123,17 +153,25 @@
 	 * @return {}
 	 */
 	function cbAll ( result ) {
-		if ( !this._once ) {
-			this.options.once.call(this.dom.el, result);
-			this._once = true;
+		if ( !this.privates.onceCalled ) {
+			if ( this.options.once ) {
+				this.options.once.call(this.dom.el, result);
+			}
+			this.privates.onceCalled = true;
+			if ( this.privates.hasOnlyOnce ) {
+				this.destroy();
+			}
 		}
-		this.options.success.call(this.dom.el, result);
+		if ( this.options.success ) {
+			this.options.success.call(this.dom.el, result);
+		}
 	}
 
 	function InView ( element, options ) {
 
 		this.element = element;
 		this.options = $.extend({}, this.defaults, options);
+		this.privates = constructPrivates(this.options);
 
 		instance.setup.call(this);
 		dom.setup.call(this);
@@ -196,16 +234,18 @@
 		defaults: {
 			threshold: 0,
 			debounce: 300,
-			success: function () {},
-			once: function () {}
+			success: null,
+			once: null
 		}
 
 	});
 
+	var proto = InView.prototype;
+
 	$.kist = $.kist || {};
 
 	$.kist[plugin.name] = {
-		defaults: InView.prototype.defaults
+		defaults: proto.defaults
 	};
 
 	$.fn[plugin.name] = function ( options, cb ) {
@@ -218,10 +258,10 @@
 				}
 			});
 		}
-		options = setOptions.apply(null, arguments);
+		options = constructOptions.apply(null, arguments);
 
 		if ( !options.success && !options.once ) {
-			return InView.prototype.getElements(this, options.threshold || InView.prototype.defaults.threshold);
+			return proto.getElements(this, options.threshold || proto.defaults.threshold);
 		} else {
 
 			/**
