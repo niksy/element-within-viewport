@@ -1,4 +1,4 @@
-/*! kist-inView 0.6.1 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
+/*! kist-inView 0.6.2 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
 ;(function ( $, window, document, undefined ) {
 
 	var plugin = {
@@ -270,11 +270,15 @@
 			 * instance for current collection which will enable us to have
 			 * only one scroll/resize event.
 			 */
-			return this
-				.filter(function ( index, element ) {
-					return !$.data(element, plugin.name);
-				})
-				.data(plugin.name, new InView(this, options));
+			var collection = this.filter(function () {
+				return !$.data(this, plugin.name);
+			});
+			if ( collection.length ) {
+				collection.data(plugin.name, new InView(collection, options));
+			}
+
+			return this;
+
 		}
 
 	};
