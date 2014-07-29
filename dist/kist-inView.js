@@ -1,4 +1,4 @@
-/*! kist-inView 0.6.2 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
+/*! kist-inView 0.6.3 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
 ;(function ( $, window, document, undefined ) {
 
 	var plugin = {
@@ -20,6 +20,9 @@
 		setup: function () {
 			this.dom    = this.dom || {};
 			this.dom.el = $(this.element);
+
+			// Get collection of elements as array of DOM nodes
+			this._element = this.dom.el.toArray();
 		}
 	};
 
@@ -57,7 +60,7 @@
 		bottom: 0
 	};
 	var privates = {
-		onceCalled: false,
+		onceEl: $(),
 		hasOnlyOnce: false
 	};
 
@@ -86,23 +89,6 @@
 		}
 
 		return temp;
-	}
-
-	/**
-	 * @param  {Object} options
-	 *
-	 * @return {Object}
-	 */
-	function constructPrivates ( options ) {
-
-		var temp = $.extend({}, privates);
-
-		if ( !options.success && options.once ) {
-			temp.hasOnlyOnce = true;
-		}
-
-		return temp;
-
 	}
 
 	/**
@@ -153,25 +139,45 @@
 	 * @return {}
 	 */
 	function cbAll ( result ) {
-		if ( !this.privates.onceCalled ) {
-			if ( this.options.once ) {
-				this.options.once.call(this.dom.el, result);
+
+		var onceEl = this.privates.onceEl;
+		var resultFiltered;
+
+		// If once is defined and once collection isn’t same as original collection
+		if ( this.options.once && onceEl.length !== this.dom.el.length ) {
+
+			// Get only elements which are not inside once collection
+			resultFiltered = result.filter(function ( index, element ) {
+				return !onceEl.is(element);
+			});
+
+			// Add filtered elements to once collection
+			this.privates.onceEl = onceEl.add(resultFiltered);
+
+			// Run callback if we have results
+			if ( resultFiltered.length ) {
+				this.options.once.call(this._element, resultFiltered);
 			}
-			this.privates.onceCalled = true;
-			if ( this.privates.hasOnlyOnce ) {
-				this.destroy();
-			}
+
 		}
+
 		if ( this.options.success ) {
-			this.options.success.call(this.dom.el, result);
+			this.options.success.call(this._element, result);
 		}
+
 	}
 
+	/**
+	 * @class
+	 *
+	 * @param {jQuery} element
+	 * @param {Object} options
+	 */
 	function InView ( element, options ) {
 
 		this.element = element;
 		this.options = $.extend({}, this.defaults, options);
-		this.privates = constructPrivates(this.options);
+		this.privates = $.extend({}, privates);
 
 		instance.setup.call(this);
 		dom.setup.call(this);
@@ -215,15 +221,15 @@
 
 			return el.filter($.proxy(function ( index, element ) {
 
-				return this.isVisible( $(element), threshold );
+				return this.isVisible($(element), threshold);
 
 			}, this));
 
 		},
 
 		destroy: function () {
-			instance.destroy.call(this);
 			events.destroy.call(this);
+			instance.destroy.call(this);
 		},
 
 		/**
@@ -240,12 +246,10 @@
 
 	});
 
-	var proto = InView.prototype;
-
 	$.kist = $.kist || {};
 
 	$.kist[plugin.name] = {
-		defaults: proto.defaults
+		defaults: InView.prototype.defaults
 	};
 
 	$.fn[plugin.name] = function ( options, cb ) {
@@ -258,10 +262,12 @@
 				}
 			});
 		}
+
 		options = constructOptions.apply(null, arguments);
 
+		// If no method is provided, just give us elements in viewport
 		if ( !options.success && !options.once ) {
-			return proto.getElements(this, options.threshold || proto.defaults.threshold);
+			return InView.prototype.getElements(this, options.threshold || InView.prototype.defaults.threshold);
 		} else {
 
 			/**
