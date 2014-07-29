@@ -24,8 +24,11 @@
 
 		$('.block').inView({
 			threshold: 300,
+			success: function ( el ) {
+				console.info('Success called!', el);
+			},
 			once: function ( el ) {
-				console.log('Once called!');
+				console.log('Once called!', el);
 			}
 		}).html('Plugin initialized');
 

@@ -26,6 +26,14 @@
 			console.log( el );
 		}).html('Plugin initialized');
 
+		$('.block').inView(300, function ( el ) {
+			console.log( 'Second time!' );
+		}).html('Plugin initialized');
+
+		$('.block').inView(300, function ( el ) {
+			console.log( 'Third time!' );
+		}).html('Plugin initialized');
+
 		$('.destroy').on('click', function () {
 			$('.block').inView('destroy').html('Instance destroyed');
 		});

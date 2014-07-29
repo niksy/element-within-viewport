@@ -30,6 +30,10 @@
 			console.log( 'Second time!' );
 		}).html('Plugin initialized');
 
+		$('.block').eq(0).inView(300, function ( el ) {
+			console.log( 'Third time!' );
+		}).html('Plugin initialized');
+
 		$('.destroy').on('click', function () {
 			$('.block').eq(0).inView('destroy').html('Instance destroyed');
 		});
