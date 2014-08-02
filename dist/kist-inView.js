@@ -1,4 +1,4 @@
-/*! kist-inView 0.6.3 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
+/*! kist-inView 0.6.4 - Check if elements are in viewport. | Author: Ivan Nikolić, 2014 | License: MIT */
 ;(function ( $, window, document, undefined ) {
 
 	var plugin = {
@@ -65,27 +65,23 @@
 	};
 
 	/**
-	 * @param  {Integer|Object}   options
-	 * @param  {Function} cb
+	 * @param  {Mixed} options
 	 *
 	 * @return {Object}
 	 */
-	function constructOptions ( options, cb ) {
+	function constructOptions ( options ) {
 
 		var temp = {};
 
-		if ( typeof(options) === 'number' ) {
-			$.extend(temp, {
-				threshold: options
-			});
-		}
-		if ( typeof(cb) === 'function' ) {
-			$.extend(temp, {
-				success: cb
-			});
-		}
-		if ( typeof(options) === 'object' ) {
-			$.extend(temp, options);
+		switch ( typeof(options) ) {
+			case 'number':
+				$.extend(temp, {
+					threshold: options
+				});
+				break;
+			case 'object':
+				$.extend(temp, options);
+				break;
 		}
 
 		return temp;
@@ -252,7 +248,7 @@
 		defaults: InView.prototype.defaults
 	};
 
-	$.fn[plugin.name] = function ( options, cb ) {
+	$.fn[plugin.name] = function ( options ) {
 
 		if ( typeof(options) === 'string' && $.inArray(options, plugin.publicMethods) !== -1 ) {
 			return this.each(function () {
@@ -263,7 +259,7 @@
 			});
 		}
 
-		options = constructOptions.apply(null, arguments);
+		options = constructOptions(options);
 
 		// If no method is provided, just give us elements in viewport
 		if ( !options.success && !options.once ) {
