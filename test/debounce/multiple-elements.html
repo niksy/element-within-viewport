@@ -23,11 +23,14 @@
 	<script src="../../src/kist-inView.js"></script>
 	<script>
 
-		$('.block').inView(300, function ( el ) {
-			if ( !+'\v1' ) {
-				alert(JSON.stringify(el, null, '\t'));
-			} else {
-				console.log( el );
+		$('.block').inView({
+			threshold: 300,
+			success: function ( el ) {
+				if ( !+'\v1' ) {
+					alert(JSON.stringify(el, null, '\t'));
+				} else {
+					console.log( el );
+				}
 			}
 		}).html('Plugin initialized');
 

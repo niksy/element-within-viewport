@@ -22,16 +22,25 @@
 	<script src="../../src/kist-inView.js"></script>
 	<script>
 
-		$('.block').eq(0).inView(300, function ( el ) {
-			console.log( el.index() );
+		$('.block').eq(0).inView({
+			threshold: 300,
+			success: function ( el ) {
+				console.log( el.index() );
+			}
 		}).html('Plugin initialized');
 
-		$('.block').eq(0).inView(300, function ( el ) {
-			console.log( 'Second time!' );
+		$('.block').eq(0).inView({
+			threshold: 300,
+			success: function ( el ) {
+				console.log( 'Second time!' );
+			}
 		}).html('Plugin initialized');
 
-		$('.block').eq(0).inView(300, function ( el ) {
-			console.log( 'Third time!' );
+		$('.block').eq(0).inView({
+			threshold: 300,
+			success: function ( el ) {
+				console.log( 'Third time!' );
+			}
 		}).html('Plugin initialized');
 
 		$('.destroy').on('click', function () {

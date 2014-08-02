@@ -25,12 +25,13 @@
 
 		$('.block').eq(0).inView({
 			threshold: 300,
-			debounce: 0
-		}, function ( el ) {
-			if ( !+'\v1' ) {
-				alert(el.index());
-			} else {
-				console.log( el.index() );
+			debounce: 0,
+			success: function ( el ) {
+				if ( !+'\v1' ) {
+					alert(el.index());
+				} else {
+					console.log( el.index() );
+				}
 			}
 		}).html('Plugin initialized');
 

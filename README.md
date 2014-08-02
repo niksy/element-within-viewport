@@ -10,7 +10,7 @@ bower install niksy/kist-inView
 
 ## API
 
-### `Element.inView([options], [success])`
+### `Element.inView([options])`
 
 Returns: `jQuery`
 
@@ -88,8 +88,11 @@ $('.block').eq(0).inView({ threshold: 100 });
 Callback when `.block` elements with 300px threshold are in viewport.
 
 ```js
-$('.block').inView(300, function ( el ) {
-	console.log( 'We’re in viewport!' );
+$('.block').inView({
+	threshold: 300,
+	success: function ( el ) {
+		console.log( 'We’re in viewport!' );
+	}
 });
 ```
 
@@ -111,8 +114,11 @@ $('.block').inView({
 Callback when first `.block` element with 300px threshold is in viewport.
 
 ```js
-$('.block').eq(0).inView(300, function ( el ) {
-	console.log( 'I’m in viewport!' );
+$('.block').eq(0).inView({
+	threshold: 300,
+	success: function ( el ) {
+		console.log( 'I’m in viewport!' );
+	}
 });
 ```
 
