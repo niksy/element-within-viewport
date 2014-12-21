@@ -1,0 +1,33 @@
+{{> top title="Debounce, single element, disabled"}}
+
+<button type="button" class="destroy">Destroy instance</button>
+
+<div class="block"></div>
+<div class="block"></div>
+<div class="block"></div>
+<div class="block"></div>
+<div class="block"></div>
+<div class="block"></div>
+<div class="block"></div>
+
+<script>
+
+	$('.block').eq(0).inViewport({
+		threshold: 300,
+		debounce: 0,
+		success: function ( el ) {
+			if ( !+'\v1' ) {
+				alert(el.index());
+			} else {
+				console.log( el.index() );
+			}
+		}
+	}).html('Plugin initialized');
+
+	$('.destroy').on('click', function () {
+		$('.block').eq(0).inViewport('destroy').html('Instance destroyed');
+	});
+
+</script>
+
+{{> bottom}}
