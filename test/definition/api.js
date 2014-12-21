@@ -1,11 +1,11 @@
 // Returns every `.block` element with 300px threshold.
-$('.block').inView(300);
+$('.block').inViewport(300);
 
 // Returns first `.block` element with 100px threshold.
-$('.block').eq(0).inView({ threshold: 100 });
+$('.block').eq(0).inViewport({ threshold: 100 });
 
 // Callback when `.block` elements with 300px threshold are in viewport and debounce is 100ms.
-$('.block').inView({
+$('.block').inViewport({
 	threshold: 300,
 	debounce: 100,
 	success: function ( el ) {
@@ -17,7 +17,7 @@ $('.block').inView({
 });
 
 // Callback when first `.block` element with 300px threshold is in viewport and debounce is 100ms.
-$('.block').eq(0).inView({
+$('.block').eq(0).inViewport({
 	threshold: 300,
 	debounce: 100,
 	success: function ( el ) {
@@ -29,4 +29,4 @@ $('.block').eq(0).inView({
 });
 
 // Destroy plugin instance.
-$('.block').inView('destroy');
+$('.block').inViewport('destroy');

@@ -1,0 +1,28 @@
+{{> top title="Callback, single element, as option, only once"}}
+
+<button type="button" class="destroy">Destroy instance</button>
+
+<div class="block"></div>
+<div class="block"></div>
+<div class="block"></div>
+<div class="block"></div>
+<div class="block"></div>
+<div class="block"></div>
+<div class="block"></div>
+
+<script>
+
+	$('.block').eq(0).inViewport({
+		threshold: 300,
+		once: function ( el ) {
+			console.log('Once called!');
+		}
+	}).html('Plugin initialized');
+
+	$('.destroy').on('click', function () {
+		$('.block').eq(0).inViewport('destroy').html('Instance destroyed');
+	});
+
+</script>
+
+{{> bottom}}

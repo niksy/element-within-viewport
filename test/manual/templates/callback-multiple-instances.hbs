@@ -1,0 +1,46 @@
+{{> top title="Callback, multiple instances"}}
+
+<button type="button" class="destroy">Destroy instance ".block"</button>
+<button type="button" class="destroy1">Destroy instance ".block1"</button>
+
+<div class="block"></div>
+<div class="block"></div>
+<div class="block"></div>
+<div class="block"></div>
+<div class="block"></div>
+<div class="block"></div>
+<div class="block"></div>
+
+<div class="block1"></div>
+<div class="block1"></div>
+<div class="block1"></div>
+<div class="block1"></div>
+<div class="block1"></div>
+
+<script>
+
+	$('.block').inViewport({
+		threshold: 300,
+		success: function ( el ) {
+			console.log( el );
+		}
+	}).html('Plugin initialized');
+
+	$('.block1').inViewport({
+		threshold: 1000,
+		success: function ( el ) {
+			console.log( el );
+		}
+	}).html('Plugin initialized');
+
+	$('.destroy').on('click', function () {
+		$('.block').inViewport('destroy').html('Instance destroyed');
+	});
+
+	$('.destroy1').on('click', function () {
+		$('.block1').inViewport('destroy').html('Instance destroyed');
+	});
+
+</script>
+
+{{> bottom}}

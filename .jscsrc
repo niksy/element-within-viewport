@@ -24,7 +24,7 @@
 	"requireOperatorBeforeLineBreak": ["?", "+", "-", "/", "*", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<="],
 	"disallowSpaceAfterPrefixUnaryOperators": ["++", "--", "+", "-", "~", "!"],
 	"disallowSpaceBeforePostfixUnaryOperators": ["++", "--"],
-	"requireSpaceAfterBinaryOperators": ["+", "-", "/", "*", "=", "==", "===", "!=", "!=="],
+	"requireSpaceAfterBinaryOperators": ["=", "==", "===", "!=", "!=="],
 	"disallowImplicitTypeConversion": ["numeric", "boolean", "binary", "string"],
 	"requireCamelCaseOrUpperCaseIdentifiers": true,
 	"disallowKeywords": ["with"],
@@ -39,7 +39,7 @@
 	"requireCapitalizedConstructors": true,
 	"safeContextKeyword": [ "self" ],
 	"disallowYodaConditions": true,
-	"requireSpaceBeforeBinaryOperators": ["+", "-", "/", "*", "=", "==", "===", "!=", "!=="],
+	"requireSpaceBeforeBinaryOperators": ["=", "==", "===", "!=", "!=="],
 	"disallowTrailingComma": true,
 	"requireBlocksOnNewline": true,
 	"requireSpaceBeforeBlockStatements": true
