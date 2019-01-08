@@ -1,0 +1,10 @@
+.DS_Store
+node_modules/
+package-lock.json
+yarn.lock
+npm-debug.log
+test-dist/
+coverage/
+index.cjs.js
+index.esm.js
+dist/
