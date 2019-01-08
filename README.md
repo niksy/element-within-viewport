@@ -46,6 +46,7 @@ Type: `Object`
 | `debounce` | `Number` | `300` | Time in milliseconds which will be used to debounce callback execution. |
 | `onEnter` | `Function` | `() => {}` | Callback to execute if element is within viewport. |
 | `once` | `Boolean` | `false` | If true, will call `onEnter` only once. |
+| `fallback` | `Boolean` | `true` | Fallback to running `onEnter` on start if browser doesn’t support necessary features. |
 
 ### instance.destroy()
 

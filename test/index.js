@@ -51,7 +51,7 @@ describe('element-within-viewport', function () {
 
 		instance.destroy();
 
-		assert.equal(spy.callCount, 3);
+		assert.equal(spy.callCount, instance._isFallbackEnv ? 1 : 3);
 
 	});
 
@@ -142,7 +142,7 @@ describe('element-within-viewport', function () {
 
 		instance.destroy();
 
-		assert.equal(spy.callCount, 3);
+		assert.equal(spy.callCount, instance._isFallbackEnv ? 1 : 3);
 
 	});
 

@@ -66,8 +66,11 @@
     "minimist": "^1.2.0",
     "mocha": "^4.1.0",
     "np": "^3.0.4",
+    "regexp-replace-loader": "^1.0.1",
     "rollup": "^1.0.0",
     "rollup-plugin-babel": "^4.2.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-postprocess": "^1.0.2",
     "sinon": "^5.1.1",
     "version-changelog": "^3.1.1",
     "webpack": "^4.12.0"

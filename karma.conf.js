@@ -87,6 +87,7 @@ module.exports = function ( baseConfig ) {
 			format: '%b %T: %m',
 			terminal: true
 		},
+		browserNoActivityTimeout: 60000,
 		webpack: {
 			mode: 'none',
 			devtool: 'cheap-module-inline-source-map',
@@ -97,6 +98,19 @@ module.exports = function ( baseConfig ) {
 						exclude: /node_modules/,
 						use: [{
 							loader: 'babel-loader'
+						}]
+					},
+					{
+						test: /\.js$/,
+						include: /viewprt/,
+						use: [{
+							loader: 'regexp-replace-loader',
+							options: {
+								match: {
+									pattern: 'viewports=new Map'
+								},
+								replaceWith: 'viewports=(typeof Map==="function"?new Map:{})'
+							}
 						}]
 					},
 					{
@@ -118,7 +132,7 @@ module.exports = function ( baseConfig ) {
 			reports: ['html', 'text'],
 			thresholds: {
 				global: {
-					statements: 80
+					statements: 50
 				}
 			}
 		},

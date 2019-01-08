@@ -3,6 +3,8 @@ import { debounce as debounceFn } from 'throttle-debounce';
 
 const debounceCollection = {};
 
+const isFallbackEnv = !('MutationObserver' in window) || !('Map' in window);
+
 export default (
 	element,
 	options = {}
@@ -12,12 +14,16 @@ export default (
 		threshold = 0,
 		debounce = 300,
 		onEnter = () => {},
-		once = false
+		once = false,
+		fallback = true
 	} = options;
 
-	if ( !('MutationObserver' in window) || !('Map' in window) ) {
+	if ( fallback && isFallbackEnv ) {
 		onEnter(element);
-		return;
+		return {
+			_isFallbackEnv: true,
+			destroy: () => {}
+		};
 	}
 
 	if ( typeof debounceCollection[debounce] === 'undefined' && debounce > 0 ) {
@@ -38,6 +44,7 @@ export default (
 	});
 
 	return {
+		_isFallbackEnv: false,
 		destroy: elementObserver.destroy.bind(elementObserver)
 	};
 
