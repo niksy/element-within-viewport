@@ -146,4 +146,32 @@ describe('element-within-viewport', function () {
 
 	});
 
+	it('should handle destroy', async function () {
+
+		const selector = '.Test-block--last';
+		const defaultTimeout = 300 + 100;
+
+		const element = document.querySelector(selector);
+		const spy = sinon.spy();
+
+		const instance = fn(element, {
+			onEnter: spy
+		});
+
+		instance.destroy();
+
+		await scrollAndWait(100, defaultTimeout);
+		await scrollAndWait(200, defaultTimeout);
+		await scrollAndWait(300, defaultTimeout);
+		await scrollAndWait(getNodeOffset(element), defaultTimeout);
+		await scrollAndWait(300, defaultTimeout);
+		await scrollAndWait(getNodeOffset(element), defaultTimeout);
+		await scrollAndWait(300, defaultTimeout);
+		await scrollAndWait(getNodeOffset(element), defaultTimeout);
+		await scrollAndWait(0, defaultTimeout);
+
+		assert.equal(spy.callCount, instance._isFallbackEnv ? 1 : 0);
+
+	});
+
 });
