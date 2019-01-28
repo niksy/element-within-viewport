@@ -2,7 +2,8 @@
 
 const babel = require('rollup-plugin-babel');
 const resolve = require('rollup-plugin-node-resolve');
-const postprocess = require('rollup-plugin-postprocess');
+const globals = require('rollup-plugin-node-globals');
+const babelCore = require('@babel/core');
 
 module.exports = {
 	input: 'index.js',
@@ -23,8 +24,54 @@ module.exports = {
 		resolve({
 			only: ['viewprt']
 		}),
-		postprocess([
-			[/viewports=new Map/, 'viewports=(typeof Map==="function"?new Map:{})']
-		])
+		{
+			async transform ( code, id ) {
+				if ( id.includes('viewprt') ) {
+					const result = await babelCore.transformAsync(code, {
+						sourceMaps: true,
+						plugins: [
+							babelCore.createConfigItem(({ types: t }) => {
+								return {
+									visitor: {
+										Identifier ( path ) {
+											if ( path.get('name').node === 'window' ) {
+												path.replaceWith(t.identifier('global'));
+											}
+										},
+										NewExpression ( path ) {
+											if (
+												path.get('callee.name').node === 'Map' &&
+												path.parentPath.isAssignmentExpression()
+											) {
+												path.replaceWith(
+													t.conditionalExpression(
+														t.binaryExpression(
+															'===',
+															t.unaryExpression('typeof', t.identifier('Map')),
+															t.stringLiteral('function')
+														),
+														t.newExpression(t.identifier('Map'), []),
+														t.objectExpression([])
+													)
+												);
+											}
+										}
+									}
+								};
+							})
+						]
+					});
+					return {
+						code: result.code,
+						map: result.map
+					};
+				}
+				return {
+					code: code,
+					map: null
+				};
+			}
+		},
+		globals()
 	]
 };

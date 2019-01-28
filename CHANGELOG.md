@@ -2,6 +2,8 @@
 
 ## [Unreleased][]
 
+- Make package environment agnostic by using `global` instead of `window`
+
 ## [1.0.0][] - 2019-01-09
 
 ### Added

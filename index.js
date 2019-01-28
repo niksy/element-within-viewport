@@ -3,7 +3,7 @@ import { debounce as debounceFn } from 'throttle-debounce';
 
 const debounceCollection = {};
 
-const isFallbackEnv = !('MutationObserver' in window) || !('Map' in window);
+const isFallbackEnv = !('MutationObserver' in global) || !('Map' in global);
 
 export default (
 	element,
