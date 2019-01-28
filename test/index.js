@@ -14,164 +14,158 @@ function getNodeOffset ( node ) {
 	return rect.top + (window.pageYOffset || document.documentElement.scrollTop);
 }
 
-describe('element-within-viewport', function () {
+before(function () {
+	window.fixture.load('/test/fixtures/index.html');
+	window.viewport.set(500, 300);
+});
 
-	this.timeout(20000);
+after(function () {
+	window.fixture.cleanup();
+});
 
-	before(function () {
-		window.fixture.load('/test/fixtures/index.html');
-		window.viewport.set(500, 300);
+it('should handle callback', async function () {
+
+	const selector = '.Test-block--last';
+	const defaultTimeout = 300 + 100;
+
+	const element = document.querySelector(selector);
+	const spy = sinon.spy();
+
+	const instance = fn(element, {
+		onEnter: spy
 	});
 
-	after(function () {
-		window.fixture.cleanup();
+	await scrollAndWait(100, defaultTimeout);
+	await scrollAndWait(200, defaultTimeout);
+	await scrollAndWait(300, defaultTimeout);
+	await scrollAndWait(getNodeOffset(element), defaultTimeout);
+	await scrollAndWait(300, defaultTimeout);
+	await scrollAndWait(getNodeOffset(element), defaultTimeout);
+	await scrollAndWait(300, defaultTimeout);
+	await scrollAndWait(getNodeOffset(element), defaultTimeout);
+	await scrollAndWait(0, defaultTimeout);
+
+	instance.destroy();
+
+	assert.equal(spy.callCount, instance._isFallbackEnv ? 1 : 3);
+
+});
+
+it('should handle callback called only once', async function () {
+
+	const selector = '.Test-block--last';
+	const defaultTimeout = 300 + 100;
+
+	const element = document.querySelector(selector);
+	const spy = sinon.spy();
+
+	const instance = fn(element, {
+		once: true,
+		onEnter: spy
 	});
 
-	it('should handle callback', async function () {
+	await scrollAndWait(100, defaultTimeout);
+	await scrollAndWait(200, defaultTimeout);
+	await scrollAndWait(300, defaultTimeout);
+	await scrollAndWait(getNodeOffset(element), defaultTimeout);
+	await scrollAndWait(300, defaultTimeout);
+	await scrollAndWait(getNodeOffset(element), defaultTimeout);
+	await scrollAndWait(300, defaultTimeout);
+	await scrollAndWait(getNodeOffset(element), defaultTimeout);
+	await scrollAndWait(0, defaultTimeout);
 
-		const selector = '.Test-block--last';
-		const defaultTimeout = 300 + 100;
+	instance.destroy();
 
-		const element = document.querySelector(selector);
-		const spy = sinon.spy();
+	assert.equal(spy.callCount, 1);
 
-		const instance = fn(element, {
-			onEnter: spy
-		});
+});
 
-		await scrollAndWait(100, defaultTimeout);
-		await scrollAndWait(200, defaultTimeout);
-		await scrollAndWait(300, defaultTimeout);
-		await scrollAndWait(getNodeOffset(element), defaultTimeout);
-		await scrollAndWait(300, defaultTimeout);
-		await scrollAndWait(getNodeOffset(element), defaultTimeout);
-		await scrollAndWait(300, defaultTimeout);
-		await scrollAndWait(getNodeOffset(element), defaultTimeout);
-		await scrollAndWait(0, defaultTimeout);
+it('should handle offset', async function () {
 
-		instance.destroy();
+	const selector = '.Test-block--last';
+	const defaultTimeout = 300 + 100;
+	const viewportSize = 300;
+	const threshold = 100;
 
-		assert.equal(spy.callCount, instance._isFallbackEnv ? 1 : 3);
+	const element = document.querySelector(selector);
+	const spy = sinon.spy();
 
+	const instance = fn(element, {
+		threshold: threshold,
+		onEnter: spy
 	});
 
-	it('should handle callback called only once', async function () {
+	await scrollAndWait(100, defaultTimeout);
+	await scrollAndWait(200, defaultTimeout);
+	await scrollAndWait(300, defaultTimeout);
+	await scrollAndWait(getNodeOffset(element) - (viewportSize + threshold + 1), defaultTimeout);
+	await scrollAndWait(300, defaultTimeout);
+	await scrollAndWait(getNodeOffset(element) - (viewportSize + threshold), defaultTimeout);
+	await scrollAndWait(300, defaultTimeout);
+	await scrollAndWait(getNodeOffset(element) - (viewportSize + threshold - 1), defaultTimeout);
+	await scrollAndWait(300, defaultTimeout);
+	await scrollAndWait(400, defaultTimeout);
+	await scrollAndWait(0, defaultTimeout);
 
-		const selector = '.Test-block--last';
-		const defaultTimeout = 300 + 100;
+	instance.destroy();
 
-		const element = document.querySelector(selector);
-		const spy = sinon.spy();
+	assert.equal(spy.callCount, 1);
 
-		const instance = fn(element, {
-			once: true,
-			onEnter: spy
-		});
+});
 
-		await scrollAndWait(100, defaultTimeout);
-		await scrollAndWait(200, defaultTimeout);
-		await scrollAndWait(300, defaultTimeout);
-		await scrollAndWait(getNodeOffset(element), defaultTimeout);
-		await scrollAndWait(300, defaultTimeout);
-		await scrollAndWait(getNodeOffset(element), defaultTimeout);
-		await scrollAndWait(300, defaultTimeout);
-		await scrollAndWait(getNodeOffset(element), defaultTimeout);
-		await scrollAndWait(0, defaultTimeout);
+it('should handle debounce', async function () {
 
-		instance.destroy();
+	const selector = '.Test-block--last';
+	const timeout = 1;
 
-		assert.equal(spy.callCount, 1);
+	const element = document.querySelector(selector);
+	const spy = sinon.spy();
 
+	const instance = fn(element, {
+		debounce: timeout,
+		onEnter: spy
 	});
 
-	it('should handle offset', async function () {
+	await scrollAndWait(100, timeout + 100);
+	await scrollAndWait(200, timeout + 100);
+	await scrollAndWait(300, timeout + 100);
+	await scrollAndWait(getNodeOffset(element), timeout + 100);
+	await scrollAndWait(300, timeout + 100);
+	await scrollAndWait(getNodeOffset(element), timeout + 100);
+	await scrollAndWait(300, timeout + 100);
+	await scrollAndWait(getNodeOffset(element), timeout + 100);
+	await scrollAndWait(0, timeout + 100);
 
-		const selector = '.Test-block--last';
-		const defaultTimeout = 300 + 100;
-		const viewportSize = 300;
-		const threshold = 100;
+	instance.destroy();
 
-		const element = document.querySelector(selector);
-		const spy = sinon.spy();
+	assert.equal(spy.callCount, instance._isFallbackEnv ? 1 : 3);
 
-		const instance = fn(element, {
-			threshold: threshold,
-			onEnter: spy
-		});
+});
 
-		await scrollAndWait(100, defaultTimeout);
-		await scrollAndWait(200, defaultTimeout);
-		await scrollAndWait(300, defaultTimeout);
-		await scrollAndWait(getNodeOffset(element) - (viewportSize + threshold + 1), defaultTimeout);
-		await scrollAndWait(300, defaultTimeout);
-		await scrollAndWait(getNodeOffset(element) - (viewportSize + threshold), defaultTimeout);
-		await scrollAndWait(300, defaultTimeout);
-		await scrollAndWait(getNodeOffset(element) - (viewportSize + threshold - 1), defaultTimeout);
-		await scrollAndWait(300, defaultTimeout);
-		await scrollAndWait(400, defaultTimeout);
-		await scrollAndWait(0, defaultTimeout);
+it('should handle destroy', async function () {
 
-		instance.destroy();
+	const selector = '.Test-block--last';
+	const defaultTimeout = 300 + 100;
 
-		assert.equal(spy.callCount, 1);
+	const element = document.querySelector(selector);
+	const spy = sinon.spy();
 
+	const instance = fn(element, {
+		onEnter: spy
 	});
 
-	it('should handle debounce', async function () {
+	instance.destroy();
 
-		const selector = '.Test-block--last';
-		const timeout = 1;
+	await scrollAndWait(100, defaultTimeout);
+	await scrollAndWait(200, defaultTimeout);
+	await scrollAndWait(300, defaultTimeout);
+	await scrollAndWait(getNodeOffset(element), defaultTimeout);
+	await scrollAndWait(300, defaultTimeout);
+	await scrollAndWait(getNodeOffset(element), defaultTimeout);
+	await scrollAndWait(300, defaultTimeout);
+	await scrollAndWait(getNodeOffset(element), defaultTimeout);
+	await scrollAndWait(0, defaultTimeout);
 
-		const element = document.querySelector(selector);
-		const spy = sinon.spy();
-
-		const instance = fn(element, {
-			debounce: timeout,
-			onEnter: spy
-		});
-
-		await scrollAndWait(100, timeout + 100);
-		await scrollAndWait(200, timeout + 100);
-		await scrollAndWait(300, timeout + 100);
-		await scrollAndWait(getNodeOffset(element), timeout + 100);
-		await scrollAndWait(300, timeout + 100);
-		await scrollAndWait(getNodeOffset(element), timeout + 100);
-		await scrollAndWait(300, timeout + 100);
-		await scrollAndWait(getNodeOffset(element), timeout + 100);
-		await scrollAndWait(0, timeout + 100);
-
-		instance.destroy();
-
-		assert.equal(spy.callCount, instance._isFallbackEnv ? 1 : 3);
-
-	});
-
-	it('should handle destroy', async function () {
-
-		const selector = '.Test-block--last';
-		const defaultTimeout = 300 + 100;
-
-		const element = document.querySelector(selector);
-		const spy = sinon.spy();
-
-		const instance = fn(element, {
-			onEnter: spy
-		});
-
-		instance.destroy();
-
-		await scrollAndWait(100, defaultTimeout);
-		await scrollAndWait(200, defaultTimeout);
-		await scrollAndWait(300, defaultTimeout);
-		await scrollAndWait(getNodeOffset(element), defaultTimeout);
-		await scrollAndWait(300, defaultTimeout);
-		await scrollAndWait(getNodeOffset(element), defaultTimeout);
-		await scrollAndWait(300, defaultTimeout);
-		await scrollAndWait(getNodeOffset(element), defaultTimeout);
-		await scrollAndWait(0, defaultTimeout);
-
-		assert.equal(spy.callCount, instance._isFallbackEnv ? 1 : 0);
-
-	});
+	assert.equal(spy.callCount, instance._isFallbackEnv ? 1 : 0);
 
 });

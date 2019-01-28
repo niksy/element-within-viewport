@@ -1,16 +1,17 @@
 'use strict';
 
-const minimist = require('minimist');
+const path = require('path');
+const resolve = require('rollup-plugin-node-resolve');
+const commonjs = require('rollup-plugin-commonjs');
+const nodeBuiltins = require('rollup-plugin-node-builtins');
+const globals = require('rollup-plugin-node-globals');
+const babel = require('rollup-plugin-babel');
+const istanbul = require('rollup-plugin-istanbul');
+const rollupConfig = require('./rollup.config');
 
 let config;
 
-const args = minimist(process.argv.slice(2), {
-	'default': {
-		local: false
-	}
-});
-
-const local = args.local;
+const local = typeof process.env.CI === 'undefined' || process.env.CI === 'false';
 const port = 9001;
 
 if ( local ) {
@@ -67,12 +68,12 @@ module.exports = function ( baseConfig ) {
 		files: [
 			'test/**/*.css',
 			'test/**/*.html',
-			'test/**/.webpack.js'
+			{ pattern: 'test/**/*.js', watched: false }
 		],
 		exclude: [],
 		preprocessors: {
 			'test/**/*.html': ['html2js'],
-			'test/**/.webpack.js': ['webpack', 'sourcemap']
+			'test/**/*.js': ['rollup', 'sourcemap']
 		},
 		reporters: ['mocha', 'coverage-istanbul'],
 		port: port,
@@ -80,6 +81,9 @@ module.exports = function ( baseConfig ) {
 		logLevel: baseConfig.LOG_INFO,
 		autoWatch: false,
 		client: {
+			mocha: {
+				timeout: 20000
+			},
 			captureConsole: true
 		},
 		browserConsoleLogOptions: {
@@ -88,46 +92,32 @@ module.exports = function ( baseConfig ) {
 			terminal: true
 		},
 		browserNoActivityTimeout: 60000,
-		webpack: {
-			mode: 'none',
-			devtool: 'cheap-module-inline-source-map',
-			module: {
-				rules: [
-					{
-						test: /\.js$/,
-						exclude: /node_modules/,
-						use: [{
-							loader: 'babel-loader'
-						}]
-					},
-					{
-						test: /\.js$/,
-						include: /viewprt/,
-						use: [{
-							loader: 'regexp-replace-loader',
-							options: {
-								match: {
-									pattern: 'viewports=new Map'
-								},
-								replaceWith: 'viewports=(typeof Map==="function"?new Map:{})'
-							}
-						}]
-					},
-					{
-						test: /\.js$/,
-						exclude: /(node_modules|test)/,
-						enforce: 'post',
-						use: [{
-							loader: 'istanbul-instrumenter-loader',
-							options: {
-								esModules: true
-							}
-						}]
-					}
-				]
+		rollupPreprocessor: {
+			plugins: [
+				nodeBuiltins(),
+				babel({
+					exclude: 'node_modules/**',
+					runtimeHelpers: true
+				}),
+				resolve({
+					preferBuiltins: true
+				}),
+				commonjs(),
+				globals(),
+				...rollupConfig.plugins.filter(({ name }) => !['babel'].includes(name)),
+				istanbul({
+					exclude: ['test/**/*.js', 'node_modules/**/*']
+				})
+			],
+			output: {
+				format: 'iife',
+				name: 'elementWithinViewport',
+				sourcemap: 'inline',
+				intro: 'window.TYPED_ARRAY_SUPPORT = false;' // IE9
 			}
 		},
 		coverageIstanbulReporter: {
+			dir: path.join(__dirname, 'coverage/%browser%'),
 			fixWebpackSourcePaths: true,
 			reports: ['html', 'text'],
 			thresholds: {

@@ -8,11 +8,11 @@ module.exports = {
 	input: 'index.js',
 	output: [
 		{
-			file: 'dist/index.cjs.js',
+			file: 'index.cjs.js',
 			format: 'cjs'
 		},
 		{
-			file: 'dist/index.esm.js',
+			file: 'index.esm.js',
 			format: 'esm'
 		}
 	],
