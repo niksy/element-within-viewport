@@ -127,7 +127,7 @@ module.exports = function ( baseConfig ) {
 			}
 		},
 		singleRun: true,
-		concurrency: Infinity
+		concurrency: 1
 	}, config));
 
 };
