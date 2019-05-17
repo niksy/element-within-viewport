@@ -14,6 +14,7 @@ export default (
 		threshold = 0,
 		debounce = 300,
 		onEnter = () => {},
+		onExit = () => {},
 		once = false,
 		fallback = true
 	} = options;
@@ -35,6 +36,9 @@ export default (
 	const elementObserver = new ElementObserver(element, {
 		onEnter ( el ) {
 			onEnter(el);
+		},
+		onExit ( el ) {
+			onExit(el);
 		},
 		offset: threshold,
 		once: once,

@@ -45,6 +45,7 @@ Type: `Object`
 | `threshold` | `Number` | `0` | Positive value in pixels which will signal plugin to check for element presence earlier in document. |
 | `debounce` | `Number` | `300` | Time in milliseconds which will be used to debounce callback execution. |
 | `onEnter` | `Function` | `() => {}` | Callback to execute if element is within viewport. |
+| `onExit` | `Function` | `() => {}` | Callback to execute if element exits viewport. |
 | `once` | `Boolean` | `false` | If true, will call `onEnter` only once. |
 | `fallback` | `Boolean` | `true` | Fallback to running `onEnter` on start if browser doesn’t support necessary features. |
 

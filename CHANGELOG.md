@@ -2,6 +2,8 @@
 
 ## [Unreleased][]
 
+- Add support for `onExit` method
+
 ## [1.1.1][] - 2019-01-28
 
 - Make package environment agnostic by using `global` instead of `window`
