@@ -19,6 +19,7 @@ module.exports = {
 			sourcemap: true
 		}
 	],
+	external: ['throttle-debounce'],
 	plugins: [
 		babel({
 			exclude: 'node_modules/**'

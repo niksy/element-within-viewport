@@ -2,6 +2,10 @@
 
 ## [Unreleased][]
 
+### Changed
+
+-   Upgrade package
+
 ## [1.2.0][] - 2019-05-17
 
 ### Changed
