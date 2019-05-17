@@ -3,13 +3,10 @@ import { debounce as debounceFn } from 'throttle-debounce';
 
 const debounceCollection = {};
 
-const isFallbackEnv = !('MutationObserver' in global) || !('Map' in global);
+const isFallbackEnvironment =
+	!('MutationObserver' in global) || !('Map' in global);
 
-export default (
-	element,
-	options = {}
-) => {
-
+export default (element, options = {}) => {
 	const {
 		threshold = 0,
 		debounce = 300,
@@ -19,7 +16,7 @@ export default (
 		fallback = true
 	} = options;
 
-	if ( fallback && isFallbackEnv ) {
+	if (fallback && isFallbackEnvironment) {
 		onEnter(element);
 		return {
 			_isFallbackEnv: true,
@@ -27,18 +24,18 @@ export default (
 		};
 	}
 
-	if ( typeof debounceCollection[debounce] === 'undefined' && debounce > 0 ) {
+	if (typeof debounceCollection[debounce] === 'undefined' && debounce > 0) {
 		debounceCollection[debounce] = new ObserverCollection({
-			handleScrollResize: ( handler ) => debounceFn(debounce, handler)
+			handleScrollResize: (handler) => debounceFn(debounce, handler)
 		});
 	}
 
 	const elementObserver = new ElementObserver(element, {
-		onEnter ( el ) {
-			onEnter(el);
+		onEnter(element_) {
+			onEnter(element_);
 		},
-		onExit ( el ) {
-			onExit(el);
+		onExit(element_) {
+			onExit(element_);
 		},
 		offset: threshold,
 		once: once,
@@ -51,5 +48,4 @@ export default (
 		_isFallbackEnv: false,
 		destroy: elementObserver.destroy.bind(elementObserver)
 	};
-
 };

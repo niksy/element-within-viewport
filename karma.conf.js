@@ -20,7 +20,10 @@ if ( local ) {
 	};
 } else {
 	config = {
+		hostname: 'bs-local.com',
 		browserStack: {
+			username: process.env.BROWSER_STACK_USERNAME,
+			accessKey: process.env.BROWSER_STACK_ACCESS_KEY,
 			startTunnel: true,
 			project: 'element-within-viewport',
 			name: 'Automated (Karma)',
@@ -103,6 +106,12 @@ module.exports = function ( baseConfig ) {
 					preferBuiltins: true
 				}),
 				commonjs(),
+				babel({
+					include: 'node_modules/{has-flag,supports-color}/**',
+					runtimeHelpers: true,
+					babelrc: false,
+					configFile: path.resolve(__dirname, '.babelrc')
+				}),
 				globals(),
 				...rollupConfig.plugins.filter(({ name }) => !['babel'].includes(name)),
 				istanbul({
@@ -112,7 +121,7 @@ module.exports = function ( baseConfig ) {
 			output: {
 				format: 'iife',
 				name: 'elementWithinViewport',
-				sourcemap: 'inline',
+				sourcemap: baseConfig.autoWatch ? false : 'inline', // Source map support has weird behavior in watch mode
 				intro: 'window.TYPED_ARRAY_SUPPORT = false;' // IE9
 			}
 		},
