@@ -2,6 +2,8 @@
 
 ## [Unreleased][]
 
+## [1.2.0][] - 2019-05-17
+
 ### Changed
 
 -   Add support for `onExit` method
@@ -24,3 +26,7 @@
 [1.0.0]: https://github.com/niksy/element-within-viewport/tree/v1.0.0
 
 <!-- prettier-ignore-end -->
+
+
+[Unreleased]: https://github.com/niksy/element-within-viewport/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/niksy/element-within-viewport/tree/v1.2.0
