@@ -1,6 +1,6 @@
 {
   "name": "element-within-viewport",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Check if element is within viewport.",
   "main": "index.cjs.js",
   "module": "index.esm.js",

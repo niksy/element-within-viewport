@@ -2,6 +2,8 @@
 
 ## [Unreleased][]
 
+## [1.2.1][] - 2019-05-17
+
 ### Changed
 
 -   Upgrade package
@@ -32,5 +34,6 @@
 <!-- prettier-ignore-end -->
 
 
-[Unreleased]: https://github.com/niksy/element-within-viewport/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/niksy/element-within-viewport/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/niksy/element-within-viewport/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/niksy/element-within-viewport/tree/v1.2.0
