@@ -42,18 +42,33 @@ Element to check.
 
 Type: `Object`
 
-| Property    | Type       | Default value | Description                                                                                          |
-| ----------- | ---------- | ------------- | ---------------------------------------------------------------------------------------------------- |
-| `threshold` | `Number`   | `0`           | Positive value in pixels which will signal plugin to check for element presence earlier in document. |
-| `debounce`  | `Number`   | `300`         | Time in milliseconds which will be used to debounce callback execution.                              |
-| `onEnter`   | `Function` | `() => {}`    | Callback to execute if element is within viewport.                                                   |
-| `onExit`    | `Function` | `() => {}`    | Callback to execute if element exits viewport.                                                       |
-| `once`      | `Boolean`  | `false`       | If true, will call `onEnter` only once.                                                              |
-| `fallback`  | `Boolean`  | `true`        | Fallback to running `onEnter` on start if browser doesn’t support necessary features.                |
+| Property              | Type       | Default value          | Description                                                                                                                                                                                          |
+| --------------------- | ---------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `threshold`           | `Number`   | `0`                    | Positive value in pixels which will signal plugin to check for element presence earlier in document.                                                                                                 |
+| `scrollResizeHandler` | `Function` | `(handler) => handler` | Window scroll and resize event handler. Useful if you want to use [throttle or debounce methods](#throttle-debounce-scroll-resize) on those events. Should return new handler (original or wrapped). |
+| `onEnter`             | `Function` | `() => {}`             | Callback to execute if element is within viewport.                                                                                                                                                   |
+| `onExit`              | `Function` | `() => {}`             | Callback to execute if element exits viewport.                                                                                                                                                       |
+| `once`                | `Boolean`  | `false`                | If true, will call `onEnter` only once.                                                                                                                                                              |
+| `fallback`            | `Boolean`  | `true`                 | Fallback to running `onEnter` on start if browser doesn’t support necessary features.                                                                                                                |
 
 ### instance.destroy()
 
 Destroy instance.
+
+## FAQ
+
+### Throttling and debouncing scroll and resize event<a name="throttle-debounce-scroll-resize"></a>
+
+If you want to throttle or debounce scroll and resize events, modify handler
+with `scrollResizeHandler` property.
+
+```js
+import { debounce } from 'throttle-debounce';
+
+elementWithinViewport(document.querySelector('#jackie'), {
+	scrollResizeHandler: (handler) => debounce(300, handler)
+});
+```
 
 ## Browser support
 

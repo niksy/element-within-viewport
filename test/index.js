@@ -1,6 +1,9 @@
 import assert from 'assert';
 import sinon from 'sinon';
+import { debounce } from 'throttle-debounce';
 import fn from '../index';
+
+const scrollResizeHandler = (handler) => debounce(300, handler);
 
 function scrollAndWait(offset, wait) {
 	return new Promise((resolve) => {
@@ -34,6 +37,7 @@ it('should handle callback', async function() {
 	const spyExit = sinon.spy();
 
 	const instance = fn(element, {
+		scrollResizeHandler: scrollResizeHandler,
 		onEnter: spy,
 		onExit: spyExit
 	});
@@ -72,6 +76,7 @@ it('should handle callback called only once', async function() {
 	const spyExit = sinon.spy();
 
 	const instance = fn(element, {
+		scrollResizeHandler: scrollResizeHandler,
 		once: true,
 		onEnter: spy,
 		onExit: spyExit
@@ -104,6 +109,7 @@ it('should handle offset', async function() {
 	const spyExit = sinon.spy();
 
 	const instance = fn(element, {
+		scrollResizeHandler: scrollResizeHandler,
 		threshold: threshold,
 		onEnter: spy,
 		onExit: spyExit
@@ -136,16 +142,15 @@ it('should handle offset', async function() {
 	assert.equal(spyExit.callCount, instance._isFallbackEnv ? 0 : 1);
 });
 
-it('should handle debounce', async function() {
+it('should handle default scroll and resize handler', async function() {
 	const selector = '.Test-block--last';
-	const timeout = 1;
+	const timeout = 0;
 
 	const element = document.querySelector(selector);
 	const spy = sinon.spy();
 	const spyExit = sinon.spy();
 
 	const instance = fn(element, {
-		debounce: timeout,
 		onEnter: spy,
 		onExit: spyExit
 	});
@@ -175,6 +180,7 @@ it('should handle destroy', async function() {
 	const spyExit = sinon.spy();
 
 	const instance = fn(element, {
+		scrollResizeHandler: scrollResizeHandler,
 		onEnter: spy,
 		onExit: spyExit
 	});

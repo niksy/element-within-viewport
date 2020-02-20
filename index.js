@@ -1,7 +1,7 @@
 import { ElementObserver, ObserverCollection } from 'viewprt';
-import { debounce as debounceFn } from 'throttle-debounce';
 
-const debounceCollection = {};
+const debounceCollection = [];
+const defaultScrollResizeHandler = (handler) => handler;
 
 const isFallbackEnvironment =
 	!('MutationObserver' in global) || !('Map' in global);
@@ -9,7 +9,7 @@ const isFallbackEnvironment =
 export default (element, options = {}) => {
 	const {
 		threshold = 0,
-		debounce = 300,
+		scrollResizeHandler = defaultScrollResizeHandler,
 		onEnter = () => {},
 		onExit = () => {},
 		once = false,
@@ -24,10 +24,15 @@ export default (element, options = {}) => {
 		};
 	}
 
-	if (typeof debounceCollection[debounce] === 'undefined' && debounce > 0) {
-		debounceCollection[debounce] = new ObserverCollection({
-			handleScrollResize: (handler) => debounceFn(debounce, handler)
+	let [resolvedHandler] = debounceCollection.filter(
+		({ handleScrollResize }) => scrollResizeHandler === handleScrollResize
+	);
+
+	if (typeof resolvedHandler === 'undefined') {
+		resolvedHandler = new ObserverCollection({
+			handleScrollResize: scrollResizeHandler
 		});
+		debounceCollection.push(resolvedHandler);
 	}
 
 	const elementObserver = new ElementObserver(element, {
@@ -39,9 +44,7 @@ export default (element, options = {}) => {
 		},
 		offset: threshold,
 		once: once,
-		...(debounce > 0 && {
-			observerCollection: debounceCollection[debounce]
-		})
+		observerCollection: resolvedHandler
 	});
 
 	return {
