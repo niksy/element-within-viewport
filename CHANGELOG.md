@@ -2,6 +2,8 @@
 
 ## [Unreleased][]
 
+## [2.0.0][] - 2020-02-20
+
 ### Changed
 
 -   Abstract scroll and resize event handling, so events could be wrapped with
@@ -58,3 +60,6 @@
 [unreleased]:
 	https://github.com/niksy/element-within-viewport/compare/v1.3.0...HEAD
 [1.3.0]: https://github.com/niksy/element-within-viewport/tree/v1.3.0
+[unreleased]:
+	https://github.com/niksy/element-within-viewport/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/niksy/element-within-viewport/tree/v2.0.0
