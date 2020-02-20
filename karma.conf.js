@@ -11,12 +11,13 @@ const rollupConfig = require('./rollup.config');
 
 let config;
 
-const local = typeof process.env.CI === 'undefined' || process.env.CI === 'false';
-const port = 9001;
+const local =
+	typeof process.env.CI === 'undefined' || process.env.CI === 'false';
+const port = process.env.SERVICE_PORT;
 
-if ( local ) {
+if (local) {
 	config = {
-		browsers: ['Chrome'],
+		browsers: ['Chrome']
 	};
 } else {
 	config = {
@@ -57,15 +58,14 @@ if ( local ) {
 				project: 'element-within-viewport',
 				build: 'Automated (Karma)',
 				name: 'IE9'
-			},
+			}
 		},
 		browsers: ['BS-Chrome', 'BS-Firefox', 'BS-IE9']
 	};
 }
 
-module.exports = function ( baseConfig ) {
-
-	baseConfig.set(Object.assign({
+module.exports = function(baseConfig) {
+	baseConfig.set({
 		basePath: '',
 		frameworks: ['mocha', 'viewport', 'fixture'],
 		files: [
@@ -113,7 +113,9 @@ module.exports = function ( baseConfig ) {
 					configFile: path.resolve(__dirname, '.babelrc')
 				}),
 				globals(),
-				...rollupConfig.plugins.filter(({ name }) => !['babel'].includes(name)),
+				...rollupConfig.plugins.filter(
+					({ name }) => !['babel'].includes(name)
+				),
 				istanbul({
 					exclude: ['test/**/*.js', 'node_modules/**/*']
 				})
@@ -136,7 +138,7 @@ module.exports = function ( baseConfig ) {
 			}
 		},
 		singleRun: true,
-		concurrency: 1
-	}, config));
-
+		concurrency: 1,
+		...config
+	});
 };
