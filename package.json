@@ -1,6 +1,6 @@
 {
   "name": "element-within-viewport",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Check if element is within viewport.",
   "license": "MIT",
   "author": "Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com)",

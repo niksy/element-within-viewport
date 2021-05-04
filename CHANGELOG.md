@@ -2,6 +2,8 @@
 
 ## [Unreleased][]
 
+## [3.0.1][] - 2021-05-04
+
 ### Fixed
 
 -   Properly resolve ES module imports
@@ -72,3 +74,7 @@
 [3.0.0]: https://github.com/niksy/element-within-viewport/tree/v3.0.0
 
 <!-- prettier-ignore-end -->
+
+[unreleased]:
+	https://github.com/niksy/element-within-viewport/compare/v3.0.1...HEAD
+[3.0.1]: https://github.com/niksy/element-within-viewport/tree/v3.0.1
