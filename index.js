@@ -1,4 +1,4 @@
-import viewprt from 'viewprt';
+import * as viewprt from 'viewprt';
 
 const { ElementObserver, ObserverCollection } = viewprt;
 
