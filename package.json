@@ -37,7 +37,7 @@
     "module-check": "node -e 'require(\"element-within-viewport\");' && node --input-type=module -e 'import \"element-within-viewport\";'"
   },
   "dependencies": {
-    "viewprt": "4.0.0"
+    "viewprt": "^4.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
