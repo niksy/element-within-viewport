@@ -1,7 +1,7 @@
 import assert from 'assert';
 import sinon from 'sinon';
 import { debounce } from 'throttle-debounce';
-import fn from '../index';
+import function_ from '../index';
 
 const scrollResizeHandler = (handler) => debounce(300, handler);
 
@@ -19,16 +19,16 @@ function getNodeOffset(node) {
 	);
 }
 
-before(function() {
+before(function () {
 	window.fixture.load('/test/fixtures/index.html');
 	window.viewport.set(500, 300);
 });
 
-after(function() {
+after(function () {
 	window.fixture.cleanup();
 });
 
-it('should handle callback', async function() {
+it('should handle callback', async function () {
 	const selector = '.Test-block--last';
 	const defaultTimeout = 300 + 100;
 
@@ -36,7 +36,7 @@ it('should handle callback', async function() {
 	const spy = sinon.spy();
 	const spyExit = sinon.spy();
 
-	const instance = fn(element, {
+	const instance = function_(element, {
 		scrollResizeHandler: scrollResizeHandler,
 		onEnter: spy,
 		onExit: spyExit
@@ -54,20 +54,16 @@ it('should handle callback', async function() {
 
 	instance.destroy();
 
-	assert.equal(spy.callCount, instance._isFallbackEnv ? 1 : 3);
+	assert.equal(spy.callCount, 3);
 
 	/*
 	 * This test can sometimes be flaky on CI/BrowserStack, valid value is 3
 	 * but we will set it in range from 1 to 3 so it can pass
 	 */
-	if (instance._isFallbackEnv) {
-		assert.equal(spyExit.callCount, 0);
-	} else {
-		assert.ok(spyExit.callCount >= 1 || spyExit.callCount <= 3);
-	}
+	assert.ok(spyExit.callCount >= 1 || spyExit.callCount <= 3);
 });
 
-it('should handle callback called only once', async function() {
+it('should handle callback called only once', async function () {
 	const selector = '.Test-block--last';
 	const defaultTimeout = 300 + 100;
 
@@ -75,7 +71,7 @@ it('should handle callback called only once', async function() {
 	const spy = sinon.spy();
 	const spyExit = sinon.spy();
 
-	const instance = fn(element, {
+	const instance = function_(element, {
 		scrollResizeHandler: scrollResizeHandler,
 		once: true,
 		onEnter: spy,
@@ -98,7 +94,7 @@ it('should handle callback called only once', async function() {
 	assert.equal(spyExit.callCount, 0);
 });
 
-it('should handle offset', async function() {
+it('should handle offset', async function () {
 	const selector = '.Test-block--last';
 	const defaultTimeout = 300 + 100;
 	const viewportSize = 300;
@@ -108,7 +104,7 @@ it('should handle offset', async function() {
 	const spy = sinon.spy();
 	const spyExit = sinon.spy();
 
-	const instance = fn(element, {
+	const instance = function_(element, {
 		scrollResizeHandler: scrollResizeHandler,
 		threshold: threshold,
 		onEnter: spy,
@@ -139,10 +135,10 @@ it('should handle offset', async function() {
 	instance.destroy();
 
 	assert.equal(spy.callCount, 1);
-	assert.equal(spyExit.callCount, instance._isFallbackEnv ? 0 : 1);
+	assert.equal(spyExit.callCount, 1);
 });
 
-it('should handle default scroll and resize handler', async function() {
+it('should handle default scroll and resize handler', async function () {
 	const selector = '.Test-block--last';
 	const timeout = 0;
 
@@ -150,7 +146,7 @@ it('should handle default scroll and resize handler', async function() {
 	const spy = sinon.spy();
 	const spyExit = sinon.spy();
 
-	const instance = fn(element, {
+	const instance = function_(element, {
 		onEnter: spy,
 		onExit: spyExit
 	});
@@ -167,11 +163,11 @@ it('should handle default scroll and resize handler', async function() {
 
 	instance.destroy();
 
-	assert.equal(spy.callCount, instance._isFallbackEnv ? 1 : 3);
-	assert.equal(spyExit.callCount, instance._isFallbackEnv ? 0 : 3);
+	assert.equal(spy.callCount, 3);
+	assert.equal(spyExit.callCount, 3);
 });
 
-it('should handle destroy', async function() {
+it('should handle destroy', async function () {
 	const selector = '.Test-block--last';
 	const defaultTimeout = 300 + 100;
 
@@ -179,7 +175,7 @@ it('should handle destroy', async function() {
 	const spy = sinon.spy();
 	const spyExit = sinon.spy();
 
-	const instance = fn(element, {
+	const instance = function_(element, {
 		scrollResizeHandler: scrollResizeHandler,
 		onEnter: spy,
 		onExit: spyExit
@@ -197,6 +193,6 @@ it('should handle destroy', async function() {
 	await scrollAndWait(getNodeOffset(element), defaultTimeout);
 	await scrollAndWait(0, defaultTimeout);
 
-	assert.equal(spy.callCount, instance._isFallbackEnv ? 1 : 0);
+	assert.equal(spy.callCount, 0);
 	assert.equal(spyExit.callCount, 0);
 });

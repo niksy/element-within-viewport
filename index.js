@@ -3,28 +3,16 @@ import { ElementObserver, ObserverCollection } from 'viewprt';
 const debounceCollection = [];
 const defaultScrollResizeHandler = (handler) => handler;
 
-const isFallbackEnvironment =
-	!('MutationObserver' in global) || !('Map' in global);
-
 export default (element, options = {}) => {
 	const {
 		threshold = 0,
 		scrollResizeHandler = defaultScrollResizeHandler,
 		onEnter = () => {},
 		onExit = () => {},
-		once = false,
-		fallback = true
+		once = false
 	} = options;
 
-	if (fallback && isFallbackEnvironment) {
-		onEnter(element);
-		return {
-			_isFallbackEnv: true,
-			destroy: () => {}
-		};
-	}
-
-	let [resolvedHandler] = debounceCollection.filter(
+	let resolvedHandler = debounceCollection.find(
 		({ handleScrollResize }) => scrollResizeHandler === handleScrollResize
 	);
 
@@ -48,7 +36,6 @@ export default (element, options = {}) => {
 	});
 
 	return {
-		_isFallbackEnv: false,
 		destroy: elementObserver.destroy.bind(elementObserver)
 	};
 };

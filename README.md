@@ -6,7 +6,7 @@
 Check if element is within viewport.
 
 Convenient wrapper around [viewprt](https://github.com/gpoitch/viewprt)
-supporting debounced listeners and fallback for older browsers.
+supporting debounced listeners.
 
 ## Install
 
@@ -49,7 +49,6 @@ Type: `Object`
 | `onEnter`             | `Function` | `() => {}`             | Callback to execute if element is within viewport.                                                                                                                                                   |
 | `onExit`              | `Function` | `() => {}`             | Callback to execute if element exits viewport.                                                                                                                                                       |
 | `once`                | `Boolean`  | `false`                | If true, will call `onEnter` only once.                                                                                                                                                              |
-| `fallback`            | `Boolean`  | `true`                 | Fallback to running `onEnter` on start if browser doesn’t support necessary features.                                                                                                                |
 
 ### instance.destroy()
 
