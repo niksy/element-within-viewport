@@ -2,6 +2,15 @@
 
 ## [Unreleased][]
 
+### Changed
+
+-   Update viewprt
+
+### Removed
+
+-   **Breaking**: Drop IE support, supported browser is Edge 15+
+-   Fallback support
+
 ## [2.0.0][] - 2020-02-20
 
 ### Changed
@@ -48,18 +57,11 @@
 
 <!-- prettier-ignore-start -->
 
-[unreleased]: https://github.com/niksy/element-within-viewport/compare/v1.1.1...HEAD
-[1.1.1]: https://github.com/niksy/element-within-viewport/compare/v1.0.0...v1.1.1
 [1.0.0]: https://github.com/niksy/element-within-viewport/tree/v1.0.0
-[unreleased]: https://github.com/niksy/element-within-viewport/compare/v1.2.1...HEAD
-[1.2.1]: https://github.com/niksy/element-within-viewport/compare/v1.2.0...v1.2.1
+[1.1.1]: https://github.com/niksy/element-within-viewport/compare/v1.0.0...v1.1.1
 [1.2.0]: https://github.com/niksy/element-within-viewport/tree/v1.2.0
+[1.2.1]: https://github.com/niksy/element-within-viewport/compare/v1.2.0...v1.2.1
+[1.3.0]: https://github.com/niksy/element-within-viewport/tree/v1.3.0
+[2.0.0]: https://github.com/niksy/element-within-viewport/tree/v2.0.0
 
 <!-- prettier-ignore-end -->
-
-[unreleased]:
-	https://github.com/niksy/element-within-viewport/compare/v1.3.0...HEAD
-[1.3.0]: https://github.com/niksy/element-within-viewport/tree/v1.3.0
-[unreleased]:
-	https://github.com/niksy/element-within-viewport/compare/v2.0.0...HEAD
-[2.0.0]: https://github.com/niksy/element-within-viewport/tree/v2.0.0
