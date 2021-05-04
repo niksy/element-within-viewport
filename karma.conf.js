@@ -1,19 +1,25 @@
 'use strict';
 
 const path = require('path');
-const resolve = require('rollup-plugin-node-resolve');
-const commonjs = require('rollup-plugin-commonjs');
+const fs = require('fs');
+const { default: resolve } = require('@rollup/plugin-node-resolve');
+const commonjs = require('@rollup/plugin-commonjs');
 const nodeBuiltins = require('rollup-plugin-node-builtins');
 const globals = require('rollup-plugin-node-globals');
-const babel = require('rollup-plugin-babel');
+const { default: babel } = require('@rollup/plugin-babel');
 const istanbul = require('rollup-plugin-istanbul');
 const rollupConfig = require('./rollup.config');
 
 let config;
 
-const local =
-	typeof process.env.CI === 'undefined' || process.env.CI === 'false';
-const port = process.env.SERVICE_PORT;
+const isCI =
+	typeof process.env.CI !== 'undefined' && process.env.CI !== 'false';
+const isPR =
+	typeof process.env.TRAVIS_PULL_REQUEST !== 'undefined' &&
+	process.env.TRAVIS_PULL_REQUEST !== 'false';
+const local = !isCI || (isCI && isPR);
+
+const port = 0;
 
 if (local) {
 	config = {
@@ -34,6 +40,7 @@ if (local) {
 			'BS-Chrome': {
 				base: 'BrowserStack',
 				browser: 'Chrome',
+				'browser_version': '88',
 				os: 'Windows',
 				'os_version': '7',
 				project: 'element-within-viewport',
@@ -43,28 +50,29 @@ if (local) {
 			'BS-Firefox': {
 				base: 'BrowserStack',
 				browser: 'Firefox',
+				'browser_version': '86',
 				os: 'Windows',
 				'os_version': '7',
 				project: 'element-within-viewport',
 				build: 'Automated (Karma)',
 				name: 'Firefox'
 			},
-			'BS-IE9': {
+			'BS-Edge15': {
 				base: 'BrowserStack',
-				browser: 'IE',
-				'browser_version': '9',
+				browser: 'Edge',
+				'browser_version': '15',
 				os: 'Windows',
-				'os_version': '7',
+				'os_version': '10',
 				project: 'element-within-viewport',
 				build: 'Automated (Karma)',
-				name: 'IE9'
+				name: 'Edge15'
 			}
 		},
-		browsers: ['BS-Chrome', 'BS-Firefox', 'BS-IE9']
+		browsers: ['BS-Chrome', 'BS-Firefox', 'BS-Edge15']
 	};
 }
 
-module.exports = function(baseConfig) {
+module.exports = function (baseConfig) {
 	baseConfig.set({
 		basePath: '',
 		frameworks: ['mocha', 'viewport', 'fixture'],
@@ -100,7 +108,7 @@ module.exports = function(baseConfig) {
 				nodeBuiltins(),
 				babel({
 					exclude: 'node_modules/**',
-					runtimeHelpers: true
+					babelHelpers: 'runtime'
 				}),
 				resolve({
 					preferBuiltins: true
@@ -108,7 +116,7 @@ module.exports = function(baseConfig) {
 				commonjs(),
 				babel({
 					include: 'node_modules/{has-flag,supports-color}/**',
-					runtimeHelpers: true,
+					babelHelpers: 'runtime',
 					babelrc: false,
 					configFile: path.resolve(__dirname, '.babelrc')
 				}),
@@ -132,9 +140,9 @@ module.exports = function(baseConfig) {
 			fixWebpackSourcePaths: true,
 			reports: ['html', 'text'],
 			thresholds: {
-				global: {
-					statements: 50
-				}
+				global: JSON.parse(
+					fs.readFileSync(path.join(__dirname, '.nycrc'), 'utf8')
+				)
 			}
 		},
 		singleRun: true,

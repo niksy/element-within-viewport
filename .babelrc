@@ -1,27 +1,15 @@
 {
-	"presets": [
-		"babel-preset-niksy/next",
-		[
-			"babel-preset-niksy",
-			{
-				"@babel/preset-env": {
-					"loose": true
-				}
-			}
-		]
-	],
-	"plugins": ["@babel/plugin-transform-object-assign"],
+	"presets": [["@babel/preset-env", { "modules": false, "loose": true }]],
 	"env": {
 		"test": {
 			"presets": [
 				[
-					"babel-preset-niksy",
+					"@babel/preset-env",
 					{
-						"@babel/preset-env": {
-							"loose": true,
-							"useBuiltIns": "usage",
-							"corejs": 2
-						}
+						"modules": false,
+						"loose": true,
+						"useBuiltIns": "usage",
+						"corejs": 2
 					}
 				]
 			],

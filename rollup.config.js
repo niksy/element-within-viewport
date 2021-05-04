@@ -1,80 +1,54 @@
 'use strict';
 
-const babel = require('rollup-plugin-babel');
-const resolve = require('rollup-plugin-node-resolve');
-const globals = require('rollup-plugin-node-globals');
-const babelCore = require('@babel/core');
+const path = require('path');
+const { promises: fs } = require('fs');
+const { default: babel } = require('@rollup/plugin-babel');
 
 module.exports = {
 	input: 'index.js',
 	output: [
 		{
-			file: 'index.cjs.js',
+			file: 'cjs/index.js',
 			format: 'cjs',
+			exports: 'auto',
 			sourcemap: true
 		},
 		{
-			file: 'index.esm.js',
+			file: 'esm/index.js',
 			format: 'esm',
 			sourcemap: true
 		}
 	],
-	external: ['throttle-debounce'],
 	plugins: [
-		babel({
-			exclude: 'node_modules/**'
-		}),
-		resolve({
-			only: ['viewprt']
-		}),
-		{
-			async transform ( code, id ) {
-				if ( id.includes('viewprt') ) {
-					const result = await babelCore.transformAsync(code, {
-						sourceMaps: true,
-						plugins: [
-							babelCore.createConfigItem(({ types: t }) => {
-								return {
-									visitor: {
-										Identifier ( path ) {
-											if ( path.get('name').node === 'window' ) {
-												path.replaceWith(t.identifier('global'));
-											}
-										},
-										NewExpression ( path ) {
-											if (
-												path.get('callee.name').node === 'Map' &&
-												path.parentPath.isAssignmentExpression()
-											) {
-												path.replaceWith(
-													t.conditionalExpression(
-														t.binaryExpression(
-															'===',
-															t.unaryExpression('typeof', t.identifier('Map')),
-															t.stringLiteral('function')
-														),
-														t.newExpression(t.identifier('Map'), []),
-														t.objectExpression([])
-													)
-												);
-											}
-										}
-									}
-								};
-							})
-						]
-					});
-					return {
-						code: result.code,
-						map: result.map
-					};
+		(() => {
+			return {
+				name: 'package-type',
+				async writeBundle(output) {
+					let prefix, type;
+					if (output.file.includes('cjs/')) {
+						prefix = 'cjs';
+						type = 'commonjs';
+					} else if (output.file.includes('esm/')) {
+						prefix = 'esm';
+						type = 'module';
+					}
+					if (typeof prefix !== 'undefined') {
+						const package_ = path.join(prefix, 'package.json');
+						try {
+							await fs.unlink(package_);
+						} catch (error) {}
+						await fs.writeFile(
+							package_,
+							JSON.stringify({ type }),
+							'utf8'
+						);
+					}
 				}
-				return {
-					code: code,
-					map: null
-				};
-			}
-		},
-		globals()
+			};
+		})(),
+		babel({
+			babelHelpers: 'bundled',
+			exclude: 'node_modules/**'
+		})
 	]
 };
