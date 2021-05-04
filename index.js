@@ -1,4 +1,6 @@
-import { ElementObserver, ObserverCollection } from 'viewprt';
+import viewprt from 'viewprt';
+
+const { ElementObserver, ObserverCollection } = viewprt;
 
 const debounceCollection = [];
 const defaultScrollResizeHandler = (handler) => handler;
