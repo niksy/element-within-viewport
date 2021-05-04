@@ -40,15 +40,15 @@ Element to check.
 
 #### options
 
-Type: `Object`
+Type: `object`
 
 | Property              | Type       | Default value          | Description                                                                                                                                                                                          |
 | --------------------- | ---------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `threshold`           | `Number`   | `0`                    | Positive value in pixels which will signal plugin to check for element presence earlier in document.                                                                                                 |
+| `threshold`           | `number`   | `0`                    | Positive value in pixels which will signal plugin to check for element presence earlier in document.                                                                                                 |
 | `scrollResizeHandler` | `Function` | `(handler) => handler` | Window scroll and resize event handler. Useful if you want to use [throttle or debounce methods](#throttle-debounce-scroll-resize) on those events. Should return new handler (original or wrapped). |
 | `onEnter`             | `Function` | `() => {}`             | Callback to execute if element is within viewport.                                                                                                                                                   |
 | `onExit`              | `Function` | `() => {}`             | Callback to execute if element exits viewport.                                                                                                                                                       |
-| `once`                | `Boolean`  | `false`                | If true, will call `onEnter` only once.                                                                                                                                                              |
+| `once`                | `boolean`  | `false`                | If true, will call `onEnter` only once.                                                                                                                                                              |
 
 ### instance.destroy()
 
@@ -88,6 +88,6 @@ MIT © [Ivan Nikolić](http://ivannikolic.com)
 [ci]: https://travis-ci.com/niksy/element-within-viewport
 [ci-img]: https://travis-ci.com/niksy/element-within-viewport.svg?branch=master
 [browserstack]: https://www.browserstack.com/
-[browserstack-img]: https://www.browserstack.com/automate/badge.svg?badge_key=N1NNRmJzVHl6WGZYem1CZkxvQk9xSDZLOUtMaGlhbXNRd0kydGM3SURaaz0tLTBqVWlxQXp6cTVmSUM1eEV4TVhCREE9PQ==--824629ccac56e8c6b37b39dc728d871f2c31c336
+[browserstack-img]: https://www.browserstack.com/automate/badge.svg?badge_key=bWM5U1R1ZU9DWXdacnFFV2prdVBHN05sZWlSQ0pwUzZoZkdtbXdMRUtscz0tLU9YOEJ0Z0xKZmg5aTJvd1F0TDQ4dFE9PQ==--b50bf3dc08e7e2401acdcd270693865d61221cf9
 
 <!-- prettier-ignore-end -->
