@@ -2,6 +2,8 @@
 
 ## [Unreleased][]
 
+## [3.0.0][] - 2021-05-04
+
 ### Changed
 
 -   Update viewprt
@@ -65,3 +67,7 @@
 [2.0.0]: https://github.com/niksy/element-within-viewport/tree/v2.0.0
 
 <!-- prettier-ignore-end -->
+
+[unreleased]:
+	https://github.com/niksy/element-within-viewport/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/niksy/element-within-viewport/tree/v3.0.0
