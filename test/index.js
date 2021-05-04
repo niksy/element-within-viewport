@@ -28,6 +28,21 @@ after(function () {
 	window.fixture.cleanup();
 });
 
+it('should handle callback without scrolling', async function () {
+	const selector = '.Test-block';
+
+	const element = document.querySelector(selector);
+	const spy = sinon.spy();
+
+	const instance = function_(element, {
+		onEnter: spy
+	});
+
+	instance.destroy();
+
+	assert.equal(spy.callCount, 1);
+});
+
 it('should handle callback', async function () {
 	const selector = '.Test-block--last';
 	const defaultTimeout = 300 + 100;
